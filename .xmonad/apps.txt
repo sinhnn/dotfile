@@ -1,0 +1,10 @@
+nm-applet
+goldendict
+ibus-daemon
+pidgin
+thunderbird
+mate-panel
+/usr/libexec/mate-notification-daemon
+system-config-printer-applet
+mate-screensaver
+export DE=mate
