@@ -24,3 +24,4 @@ git submodule add https://github.com/tmhedberg/matchit .vim/bundle/matchit
 git submodule add https://github.com/majutsushi/tagbar .vim/bundle/tagbar
 git submodule add https://github.com/vim-scripts/OmniCppComplete .vim/bundle/OmniCppComplete
 git submodule add https://github.com/Yggdroot/indentLine .vim/bundle/indentLine
+git submodule add https://github.com/honza/vim-snippets .vim/bundle/vim-snippets
