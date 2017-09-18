@@ -1,10 +1,3 @@
-## Dotfile configs
 
-Pull submodules
-```git
-	git submodule update --init --recursive # For the first time
-```
-Or 
-```
-	git pull --recurse-submodules
-```
+### Vim
+	[vim-plug instruction](https://github.com/junegunn/vim-plug)
