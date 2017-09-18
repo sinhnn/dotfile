@@ -226,6 +226,7 @@ keys' conf@(XConfig {XMonad.modMask = winKey}) = M.fromList $
     , ((winKey,                        xK_F5    ), spawn "xset dpms force off")
     , ((controlMask .|. altKey,        xK_l     ), safeSpawn screensaver ["--lock"])
     , ((controlMask .|. altKey,        xK_Delete), spawn "systemctl poweroff")
+    , ((altKey,                        xK_z), safeSpawn "ieee_sci-hub.sh" ["--no-gui"])
     -- Killing application
     ,((winKey     .|. shiftMask,       xK_c     ), kill)
     -- Do something: text -> command

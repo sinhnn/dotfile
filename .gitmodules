@@ -46,3 +46,15 @@
 [submodule ".vim/bundle/vim-snippets"]
 	path = .vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
+[submodule ".vim/bundle/vim-systemc"]
+	path = .vim/bundle/vim-systemc
+	url = http://github.com/Kocha/vim-systemc
+[submodule ".vim/bundle/LanguageClient-neovim"]
+	path = .vim/bundle/LanguageClient-neovim
+	url = https://github.com/autozimu/LanguageClient-neovim
+[submodule ".vim/bundle/VHDL-indent-93-syntax"]
+	path = .vim/bundle/VHDL-indent-93-syntax
+	url = https://github.com/vim-scripts/VHDL-indent-93-syntax
+[submodule ".vim/bundle/vim-easy-align"]
+	path = .vim/bundle/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align

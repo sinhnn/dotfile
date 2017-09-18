@@ -6,5 +6,5 @@ thunderbird
 mate-panel
 /usr/libexec/mate-notification-daemon
 system-config-printer-applet
-mate-screensaver
+xscreensaver
 export DE=mate

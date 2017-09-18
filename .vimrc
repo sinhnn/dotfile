@@ -1,200 +1,144 @@
+call plug#begin('~/.vim/plugged')
+" Github
+Plug 'airblade/vim-gitgutter'
+
+"
+Plug 'majutsushi/tagbar'
+Plug 'https://github.com/tmhedberg/matchit'
+Plug 'scrooloose/nerdtree'
+
+" Code documentation
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
+" Find
+Plug 'junegunn/fzf', {'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" Vimgrep
+Plug 'mileszs/ack.vim'
+
+"Completion
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-surround'
+
+"Fomat
+Plug 'Yggdroot/indentLine'
+Plug 'junegunn/vim-easy-align'
+
+" C/CPP languages
+Plug 'Rip-Rip/clang_complete'
+Plug 'rhysd/vim-clang-format'
+Plug 'scrooloose/syntastic'
+
+" GDB
+Plug 'vim-scripts/Conque-GDB'
+
+" HDL languages
+Plug 'Kocha/vim-systemc'
+Plug 'nachumk/systemverilog.vim'
+Plug 'suoto/hdlcc'
+Plug 'suoto/vim-hdl'
+
+"
+if has('nvim')
+	Plug 'neomake/neomake'
+	Plug 'http://git.vhdltool.com/vhdl-tool/syntastic-vhdl-tool'
+	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+""	Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+endif
+call plug#end()
+
 " -------------------- Common -------------------------------------------
 set t_Co=256
 syntax on
 let g:solarized_termcolors=256
-"colorscheme solarized
 set background=dark
-colorscheme PaperColor "default
-set showmode
+"if has('nvim') == 1
+"	colorscheme PaperColor "default
+"	set background=dark
+"endif
 set autoread
 set showmatch
 set autoindent
-set smartindent
-set smarttab
-"set nohlsearch
 set incsearch
-set showcmd
 set wildmenu
 set cmdheight=2
 set undolevels=100
-set history=1000
+set history=100
 set tabstop=4
 set shiftwidth=4
 set nofoldenable
+set incsearch
+set ignorecase
+set smartcase
+set hid
+set showfulltag
 
 " ---------- Developer  --------------------------------------------------------
 set textwidth=80
-set tags+=build/tags,../tags,tags
+"set tags+=tags,tags,TAGS
 set laststatus=1
 set makeef=./errors.err
-
-"Avoid invisible hi Search at cursor
+set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 hi Search term=reverse ctermfg=None ctermbg=242 guibg=DarkGrey
-set statusline+=%#warningmsg#
-set statusline+=%*
 set fo+=c fo+=r fo-=o
-"  -----------------------------------------------------------------------------
-
-" -------------------- Shortcuts  ----------------------------------------------
-map <F3> :NERDTreeToggle<CR>
-map <F4> :TagbarToggle<CR>
-nnoremap <F5> :make<bar>cw<CR><CR><CR>
-map <C-S-n> :silent !xterm&<CR><CR>
-map <C-e> :silent cnext <CR><CR>
-let g:UltiSnipsListSnippets="<c-u>"
-let g:author="Ngoc-Sinh Nguyen"
-
-" -------------------- Pathogen  -----------------------------------------------
-let NERDTreeIgnore=['\~$', '^\.git', '\.swp$','\.o']
-execute pathogen#infect()
-execute pathogen#helptags()
-filetype on
-filetype plugin indent on
 " -----------------------------------------------------------------------------
 
+" -------------------- Shortcuts  ----------------------------------------------
+map <F3>      : NERDTreeToggle<CR>
+map <F4>      : TagbarToggle<CR>
+nnoremap <F5> : make<bar>cw<CR><CR><CR>
+map <C-S-n>   : silent !xterm&<CR><CR>
+map <C-e>     : silent cnext <CR><CR>
+map <F4>      : TagbarToggle<CR>
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
-" -------------------- Make, Error format setup  -------------------------------
-"
-" CPP  -------------------------------------------------------------------------
-function! CCPP()
-    "autocmd BufWritePre,BufRead *.{cpp,c} :silent !${HOME}/.vim/gentags.sh %&
-    if !filereadable("Makefile")
-        if (&ft=='c')
-            setlocal makeprg=gcc\ \-c\ -o\ %.o\ %\ $*
-        elseif (&ft=='cpp')
-            setlocal makeprg=g++\ -c\ -o\ %.o\ %\ $*
-        endif
-    endif
-	set expandtab "Tab indent to space indent
-endfunction
-au FileType {cpp,c} call CCPP()
-"  -----------------------------------------------------------------------------
+"let g:python3_host_prog = '/usr/bin/python2'
+let g:ackprg = 'ag --vimgrep'
+let g:clang_close_preview = 1
+let NERDTreeIgnore=['\~$', '^\.git', '\.swp$','\.o']
 
-" VHDL  ------------------------------------------------------------------------
-function! VHDL()
-    setlocal comments=:--
-    setlocal errorformat=\*\*\ %trror:\ %f(%l):\ %m
-    setlocal errorformat+=\*\*\ %tarning:\ %f(%l):\ %m
-    if !filereadable("Makefile")
-        if (&ft=='verilog')
-            setlocal makeprg=vlog\ %\ $*
-        elseif (&ft=='systemverilog')
-            setlocal makeprg=vlog\ -sv\ %\ $*
-        elseif (&ft=='vhdl')
-            setlocal makeprg=vcom\ %\ $*
-        endif
-    endif
-	set expandtab "Tab indent to space indent
-endfunction
-au FileType {vhdl,verliog,systemverilog} call VHDL()
-"  -----------------------------------------------------------------------------
+" --- Plug 'scrooloose/syntastic'  ---------------------------------------------
+let g:author="Ngoc-Sinh Nguyen"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_cpp_config_file='.clang_complete'
+let g:syntastic_c_config_file='.clang_complete'
+" ------------------------------------------------------------------------------
 
-" TEX  -------------------------------------------------------------------------
+" ---- Plug 'suoto/vim-hdl'  ---------------------------------------------------
+let g:vimhdl_conf_file = './msim.prj'
+let g:syntastic_vhdl_checkers = ['vimhdl']
+" ------------------------------------------------------------------------------
+
+" --- Plug 'junegunn/vim-easy-align'  ------------------------------------------
+let g:easy_align_delimiters = {
+	\ ':': { 'pattern': ':', 'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+	\ ')': { 'pattern': ')', 'left_margin': 1, 'right_margin': 0, 'stick_to_left': 0 },
+	\ '(': { 'pattern': '(', 'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
+	\ 'w': { 'pattern': '\>', 'left_margin': 0, 'right_margin': 1, 'stick_to_left': 0 },
+	\ }
+
+command! -range EasyAlignByWord  <line1>,<line2>EasyAlign *w
+" ------------------------------------------------------------------------------
+
 let g:tex_flavor = "latex" " All .tex is latex file
-au FileType bib setlocal ft=tex
-au FileType bib setlocal syntax=bib
-function! TEX()
-    setlocal spell spelllang=en_us
-    setlocal comments=:%
-    setlocal fo+=cr fo-=o
-    setlocal errorformat=%f:%l:\ %m
-    setlocal fde=getline(v:lnum)=
-        \~'^\\s*$'&&getline(v:lnum+1)=~'\\S'?'<1':1
-    if !filereadable("Makefile")
-        setlocal makeprg=env\ max_print_line=1000\ 
-                    \pdflatex\ -synctex=1\ -interaction=nonstopmode\ 
-                    \\-file\-line\-error\ 
-                    \--output-dir=build\ $*\ 
-                    \\\\|\ vim\-error\-filter
-    endif
-    set errorformat=%f:%l:\ %m
-endfunction
-au FileType {tex,bib} call TEX()
+
+" --- Plug 'junegunn/fzf.vim'  -------------------------------------------------
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+set rtp+=~/.fzf
 "  -----------------------------------------------------------------------------
-
-
-" -------------------- Auto insert header -------------------------------
-function Insertheader ()
-    "If file exist, copy skeletop
-    let s:fn=expand('%:t')
-    let sftf = $HOME . "/.vim/header/" . s:fn
-    if filereadable( sftf )
-        execute '0r ' . sftf
-        g/StartHere/s/StartHere//g
-        "startinsert
-    else
-        " If only extension exist.
-        let sftf = $HOME . "/.vim/header/_." . &filetype
-        if filereadable( sftf )
-            execute '0r ' . sftf
-            $
-            "startinsert
-        endif
-    endif
-endfunction
-autocmd bufnewfile * call Insertheader ()
-
-" -------------------- Doxygen ------------------------------------------
-" Update file name, date modified  function
-function! UpdateDF()
-  :mark l
-  :silent! %s/!!DATE/\=  strftime("%c")/g
-  :silent! %s/!!FILE/\=  expand("%")/g
-  :silent! %s/File name.*/\='File name      : ' . expand("%")/g
-  :silent! %s/Last modified.*/\='Last modified  : '.strftime("%c")/g
-  :'l
-  :delmarks l
-endfunction
-command UpdateDF call UpdateDF()
-
-" ------------------------ Check Coding Style ---------------------------
-highlight ColorColumn ctermbg=Black ctermfg=DarkRed
-highlight ExtraWhitespace ctermbg=red guibg=red
-"Check style while writting
-function CheckStyle()
-    set colorcolumn=+1
-    match ExtraWhitespace /\s\+$/
-    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-    autocmd BufWinLeave * call clearmatches()
-endfunction
-" Check style before public
-function BeforePublic()
-    match ExtraWhitespace /\s\+$\|^\t\+\|!!FILE\|!!DATE\|\* Desc\s*:$/
-    autocmd BufWinLeave * call clearmatches()
-endfunction
-command BeforePublic call BeforePublic()
-" Uncheck style
-function UnCheckStyle()
-    set cc=
-    highlight clear ExtraWhitespace
-endfunction
-command CheckStyle call CheckStyle()
-command UnCheckStyle call UnCheckStyle()
-au FileType {cpp,c,make,sh,vhdl,verilog,systemverilog,tex} call CheckStyle ()
-
-fun ClearTrailingSpace()
-    :%s/\s\+$//g
-endf
-command ClearTrailingSpace call ClearTrailingSpace()
-
-" -----------------------------------------------------------------------
-function! FillLine( str )
-    " set tw to the desired total length
-    let tw = &textwidth
-    if tw==0 | let tw = 80 | endif
-    " strip trailing spaces first
-    " calculate total number of 'str's to insert
-    let ccl=strlen(getline('.'))
-    let reps = (tw - ccl - 1) / len(a:str)
-    if reps > 0
-        .s/$/\=(' '.repeat(a:str, reps))/
-    endif
-    return ""
-endfunction
-command! -nargs=1 FillLine call FillLine(<f-args>)
-
+"
+" Load my scripts  -------------------------------------------------------------
+source ~/.vim/svim/code_style.vim
+au FileType {tex,latex} let g:indentLine_conceallevel=0
+au FileType {c,cpp} source ~/.vim/svim/ccpp.vim
+au FileType {vhdl,vhd,verilog,systemverilog} source ${HOME}/.vim/svim/hdl.vim
+au FileType {tex,bib,latex} source ${HOME}/.vim/svim/tex.vim
 
 " Quit Buffer when quit file
 au BufEnter * call MyLastWindow()
@@ -205,3 +149,92 @@ function! MyLastWindow()
         endif
     endif
 endfunction
+
+" --- Plug 'SirVer/ultisnips'  -------------------------------------------------
+let g:snips_author=g:author
+let g:UltiSnipsListSnippets="<c-u>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-snippets"]
+let g:UltiSnipsEditSplit="vertical"
+" ------------------------------------------------------------------------------
+
+" --- Plug 'vim-scripts/DoxygenToolkit.vim'  -----------------------------------
+let g:DoxygenToolkit_authorName=g:author
+let g:DoxygenToolkit_briefTag_pre="\\brief  "
+let g:DoxygenToolkit_paramTag_pre="\\param "
+let g:DoxygenToolkit_returnTag="\\returns   "
+let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
+let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------------------"
+if (expand('%:e') =='vhd')
+	let g:DoxygenToolkit_startCommentTag="-- "
+	let g:DoxygenToolkit_interCommentTag="-- "
+	let g:DoxygenToolkit_endCommentTag="-- "
+	let g:DoxygenToolkit_startCommentBlock = "-- "
+	let g:DoxygenToolkit_endCommentBlock = "-- "
+	let g:DoxygenToolkit_interCommentBlock = "-- "
+endif
+"  -----------------------------------------------------------------------------
+
+" --- Plug 'majutsushi/tagbar' ------------------------------------------------
+let g:tagbar_left = 0
+let g:tagbar_type_systemverilog= {
+    \ 'ctagstype' : 'systemverilog',
+    \ 'kinds'     : [
+        \'m:modules',
+        \'a:parameters',
+        \'o:ports',
+        \'d:defines',
+        \'c:classes',
+        \'t:tasks',
+        \'f:functions',
+        \'i:interfaces',
+        \'v:variables',
+        \'e:typedefs'
+  \]
+\}
+let g:tagbar_type_vhdl = {
+    \ 'ctagsbin': 'vhdl-tool',
+    \ 'ctagsargs': 'ctags -o -',
+    \ 'ctagstype': 'vhdl',
+    \ 'kinds' : [
+        \'d:prototypes',
+        \'b:package bodies',
+        \'e:entities',
+        \'a:architectures',
+        \'t:types',
+        \'p:processes',
+        \'f:functions',
+        \'r:procedures',
+        \'c:constants',
+        \'T:subtypes',
+        \'r:records',
+        \'C:components',
+        \'P:packages',
+        \'l:locals',
+        \'i:instantiations',
+        \'s:signals',
+        \'v:variables:1:0'
+    \ ],
+    \ 'sro' : '::',
+    \ 'kind2scope' : {
+         \ 'a' : 'architecture',
+         \ 'b' : 'packagebody',
+         \ 'P' : 'package',
+         \ 'p' : 'process'
+    \ },
+    \ 'scope2kinds' : {
+         \ 'architecture' : 'a',
+         \ 'packagebody'  : 'b',
+         \ 'package'      : 'P',
+         \ 'process'      : 'p'
+    \ }
+	\}
+let g:tagbar_type_systemc = {
+    \ 'ctagstype': 'systemc',
+    \ 'kinds' : [
+        \'o:ports',
+        \'c:constants',
+        \'s:signals',
+        \'v:variable'
+    \]
+\}
+" ------------------------------------------------------------------------------
