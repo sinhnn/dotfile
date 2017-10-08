@@ -54,8 +54,8 @@ screensaver   = "mate-screensaver-command"
 dosomething   = "/home/sinhnn/.local/bin/music_random_playlist.sh"
 --Note: get window information by "xprop"
 -- MAIN KEYs
-altKey   = mod1Mask
-winKey   = mod4Mask
+altKey   = mod4Mask
+winKey   = mod1Mask
 ----STATUS BAR
 --dzen2
 dzenLeft= "~/.xmonad/dzenLeft.sh"
@@ -66,22 +66,6 @@ myDzen = dzenLeft ++ " | " ++ dzenRight ++ " | " ++  autostart
 xmobarBar = "bash -c \"tee >(xmobar -x0) | xmobar -x1 | ~/.xmonad/autostart\""
 --- WORKSPACES
 myWorkspaces    = ["1.1:main", "1.2:main", "1.3:main", "4d:doc", "5f:web","6s:mail","7a:music","8r:win", "9g:img"]
-
-------------------------------COLOR NAMES------------------------------
-colorOrange         = "#FD971F"
-colorDarkGray       = "#1B1D1E"
-colorGray           = "#7B7B7B"
-colorPink           = "#F92672"
-colorGreen          = "#A6E22E"
-colorBlue           = "#66D9EF"
-colorYellow         = "#E6DB74"
-colorWhite          = "#CCCCC6"
-colorRed            = "#FF0000"
-colorNormalBorder   = colorDarkGray
-colorFocusedBorder  = colorRed
-barFont  = "terminus"
-barXFont = "inconsolata:size     = 12"
-xftFont  = "xft: inconsolata-14"
 
 -------------------------------------------------------------------------------
 -- MAIN --
@@ -140,7 +124,7 @@ manageHook' = insertPosition Above Newer <+> (composeAll . concat $
         myVim         = ["Gvim"]
         myTor         = ["Transmission-gtk"]
         myMail        = ["Mail"]
-        myWin         = ["Wine"]
+        myWin         = ["Wine", "Playonlinux"]
         -- resources
         myIgnores     = ["desktop","desktop_window","notify-osd","stalonetray","trayer","gnome-panel"]
         -- names
@@ -199,7 +183,7 @@ largeXPConfig = mXPConfig
                 }
 
 ------------------------------GRID------------------------------
-myGSConfig = defaultGSConfig { gs_cellwidth = 300 }
+myGSConfig = defaultGSConfig {gs_cellwidth = 300}
 ------------------------------URGEN-----------------------------
 urgentConfig = UrgencyConfig { suppressWhen = Focused, remindWhen = Dont }
 
@@ -226,7 +210,7 @@ keys' conf@(XConfig {XMonad.modMask = winKey}) = M.fromList $
     , ((winKey,                        xK_F5    ), spawn "xset dpms force off")
     , ((controlMask .|. altKey,        xK_l     ), safeSpawn screensaver ["--lock"])
     , ((controlMask .|. altKey,        xK_Delete), spawn "systemctl poweroff")
-    , ((altKey,                        xK_z), safeSpawn "ieee_sci-hub.sh" ["--no-gui"])
+    , ((altKey,                        xK_l), safeSpawn "ieee_sci-hub.sh" ["--no-gui"])
     -- Killing application
     ,((winKey     .|. shiftMask,       xK_c     ), kill)
     -- Do something: text -> command
@@ -297,4 +281,20 @@ keys' conf@(XConfig {XMonad.modMask = winKey}) = M.fromList $
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 -------------------------------------------------------------------------------
+------------------------------COLOR NAMES------------------------------
+colorOrange         = "#FD971F"
+colorDarkGray       = "#1B1D1E"
+colorGray           = "#7B7B7B"
+colorPink           = "#F92672"
+colorGreen          = "#A6E22E"
+colorBlue           = "#66D9EF"
+colorYellow         = "#E6DB74"
+colorWhite          = "#CCCCC6"
+colorRed            = "#FF0000"
+colorNormalBorder   = colorDarkGray
+colorFocusedBorder  = colorRed
+barFont  = "terminus"
+barXFont = "inconsolata:size     = 12"
+xftFont  = "xft: inconsolata-14"
+
 

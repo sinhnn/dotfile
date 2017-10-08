@@ -1,0 +1,74 @@
+# This file contains snippets that are always defined. I personally
+# have snippets for signatures and often needed texts
+
+# sligthly lower priority than everything else since specialized versions
+# should overwrite. The user needs to adjust her priority in her snippets to
+# ~-55 so that other filetypes will still overwrite.
+priority -55
+
+extends cpp
+
+##############
+# NICE BOXES #
+##############
+global !p
+from vimsnippets import foldmarker, make_box, get_comment_format
+endglobal
+
+snippet module "sc_module" bw
+SC_MODULE (${1:`!p snip.rv = snip.basename or "name"`})
+{
+    /* Interface */
+    $0
+	/* Internal parameter */
+
+	/* Function */
+
+
+	/* Constructor */
+    SC_HAS_PROCESS(${1});
+	${1}(sc_module_name name_,  ${2:other variable}) :
+	    sc_module(name_),
+		${2}(${2}_)
+		{
+		
+		}
+};
+endsnippet
+
+snippet in "sc_in" b
+sc_in < ${1:sc_logic} > ${2: portname};
+$0
+endsnippet
+
+snippet out "sc_out" b
+sc_out < ${1:sc_logic} > ${2: portname};
+$0
+endsnippet
+
+snippet signal "sc_signal" b
+sc_signal < ${1:sc_logic} > ${2: signalname};
+endsnippet
+
+snippet method "sc_method" b
+SC_METHOD(${1:function});
+$0
+endsnippet
+
+snippet uint "sc_uint" b
+sc_uint<!${1:size}> $0
+$0
+endsnippet
+
+snippet bv "sc_bv" b
+sc_bv<!${1:size}> $0
+$0
+endsnippet
+
+snippet time "sc_time"
+sc_time ${1:name}(${2:number}, ${3:SC_NS});
+$0
+endsnippet
+
+
+# vim:ft=snippets:

@@ -18,6 +18,7 @@ function UpdateDF()
   :delmarks l
 endfunction
 
+
 " ------------------------ Check Coding Style ---------------------------
 highlight ColorColumn ctermbg=Black ctermfg=DarkRed
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -53,10 +54,10 @@ function! FillLine( str )
     if tw==0 | let tw = 80 | endif
     " strip trailing spaces first
     " calculate total number of 'str's to insert
-    let ccl=strlen(getline('.'))
-    let reps = (tw - ccl - 1) / len(a:str)
+    let ccl=strlen(getline('.')) 
+    let reps = (tw - ccl) / len(a:str)
     if reps > 0
-        .s/$/\=(' '.repeat(a:str, reps))/
+        .s/$/\=(''.repeat(a:str, reps))/
     endif
     return ""
 endfunction
@@ -69,7 +70,6 @@ command ClearTrailingSpace call ClearTrailingSpace()
 command CheckStyle call CheckStyle()
 command UnCheckStyle call UnCheckStyle()
 command BeforePublic call BeforePublic()
-command InsertTemplate call InsertTemplate()
 
 autocmd bufnewfile *.{c,cpp,h,hpp,sv,v,c++}  0r ~/.vim/header/_.c
 autocmd bufnewfile *.{vhd,vhdl}  0r ~/.vim/header/_.vhd

@@ -1,7 +1,6 @@
 snippet ---
-	`FillLine('-')`${1}
+	`repeat('-', strlen(getline((line('.') + 1))))`
 snippet ===
 	`FillLine('=')`${1}
 snippet ***
 	`FillLine('*')`${1}
-

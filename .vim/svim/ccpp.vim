@@ -14,6 +14,9 @@ function! CCPP()
     endif
 	set expandtab "Tab indent to space indent
 	set cindent
+
+	set omnifunc=ClangComplete
+	set completefunc=ClangComplete
 endfunction
 call CCPP()
 

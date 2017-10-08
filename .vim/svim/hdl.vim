@@ -20,7 +20,7 @@ function! HDL()
 	set expandtab
 
 	"Dictionary
-	iabb nc =>
+	iabb cn =>
 	iabb veq :=
 	iabb seq <=
 	iabb con constant
