@@ -1,4 +1,7 @@
 call plug#begin('~/.vim/plugged')
+
+
+Plug 'https://github.com/vim-scripts/let-modeline.vim'
 " Github
 Plug 'airblade/vim-gitgutter'
 
@@ -74,8 +77,8 @@ else
 	set t_Co=256
 	"let g:solarized_termcolors=256
 	set background=dark
-	"let g:solarized_contrast = "high"
-	"colorscheme solarized
+	let g:solarized_contrast = "high"
+	colorscheme solarized
 	"hi QuickFixLine cterm=None ctermbg=256 guibg=#ffff00
 	"hi Comment ctermfg=61 guifg=#80afff
 	"hi! link Comment vimCommentString
@@ -132,12 +135,15 @@ let NERDTreeIgnore=['\~$', '^\.git', '\.swp$','\.o']
 
 " let g:clang_library_path='/usr/lib64/llvm/'
 " --- Plug 'scrooloose/syntastic'  ---------------------------------------------
+"  Notes: if g:syntastic_cpp_compiler='sccom', make sure empty SYSTEMC_HOME env
+"  or point to systemc in Questasim/Modelsim
 let g:author="Ngoc-Sinh Nguyen"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_config_file='.clang_complete'
+let g:syntastic_sccom_config_file='.clang_complete'
 let g:syntastic_c_config_file='.clang_complete'
 
 " ------------------------------------------------------------------------------

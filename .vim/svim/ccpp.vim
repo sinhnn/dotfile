@@ -20,4 +20,11 @@ function! CCPP()
 endfunction
 call CCPP()
 
-
+"function! SCCOM()
+"	let g:syntastic_cpp_compiler="sccom"
+"	let g:syntastic_cpp_compiler_options="-fPIC -c
+"				\ -I/home/applications/Questasim/10.1d/questasim/include/systemc
+"				\ -I/home/applications/Questasim/10.1d/questasim/include
+"				\ -I/home/applications/Questasim/10.1d/questasim/include/ac_types
+"				\ -DMTI_SYSTEMC"
+"endfunction
