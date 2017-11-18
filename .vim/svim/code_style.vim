@@ -30,6 +30,8 @@ function CheckStyle()
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
+	let g:syntastic_cpp_checkers=['gcc','cpplint', 'cppclean', 'cppcheck']
+	let g:syntastic_c_checkers=['gcc', 'checkpatch', 'cpplint', 'cppclean', 'cppcheck']
 endfunction
 
 " Check style before public
@@ -41,6 +43,8 @@ endfunction
 function UnCheckStyle()
     set cc=
     highlight clear ExtraWhitespace
+	let g:syntastic_cpp_checkers=['gcc']
+	let g:syntastic_c_checkers=['gcc']
 endfunction
 
 fun ClearTrailingSpace()

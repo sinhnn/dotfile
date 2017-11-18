@@ -24,6 +24,7 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.ThreeColumns
 -- Rename the layout title
 import XMonad.Layout.Renamed
 import XMonad.Layout.Tabbed
@@ -116,7 +117,7 @@ manageHook' = insertPosition Above Newer <+> (composeAll . concat $
         role          = stringProperty "WM_WINDOW_ROLE"
         name          = stringProperty "WM_NAME"
         -- classnames
-        myFloats      = ["VirtualBox","Xmessage","Nm-connection-editor","Write", "Msgcompose", "Zenity", "Yad"]
+        myFloats      = ["VirtualBox","Xmessage","Nm-connection-editor","Write", "Msgcompose", "Zenity", "Yad", "Xsane"]
         myWebs        = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
         myMusic       = ["Rhythmbox","Spotify","Audacious", "Vlc"]
         myChat        = ["Buddy List", "Psi", "Psi+", "chat", "psi", "Skype", "Pidgin"]
@@ -151,7 +152,7 @@ layoutHook'  = onWorkspace "6s:mail" chatLayout $
 customLayout = avoidStruts $ full ||| sTile ||| sMtile
 chatLayout = avoidStruts $ full ||| sTile ||| imLayout
 -- Typical layout
-rt     = ResizableTall 1 (2/100) (1/2) []
+rt     = ResizableTall 1 (2/100) (3/5) []
 full   = renamed [Replace " "] $ smartBorders Full
 sMtile = renamed [Replace "-"] $ smartBorders $ Mirror rt
 sTile  = renamed [Replace "|"] $ smartBorders rt
@@ -159,8 +160,8 @@ sTile  = renamed [Replace "|"] $ smartBorders rt
 imLayout = renamed [Replace "IM" ] $ reflectHoriz $ withIM ratio pidginRoster
             $ withIM skypeRatio skypeRoster Grid
   where
-    ratio = (1/5)
-    skypeRatio = (1/5)
+    ratio = (2/5)
+    skypeRatio = (2/5)
     pidginRoster = And (ClassName "Pidgin") (Role "buddy_list")
     skypeRoster = And (ClassName "Skype") (Role "MainWindow")
 

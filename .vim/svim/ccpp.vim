@@ -17,6 +17,21 @@ function! CCPP()
 
 	set omnifunc=ClangComplete
 	set completefunc=ClangComplete
+
+	let g:syntastic_cpp_config_file='.clang_complete'
+	let g:syntastic_cpp_cpplint_exec = 'cpplint'
+	
+	let g:syntastic_cpplint_config_file='.clang_complete'
+	let g:syntastic_cpp_cppclean_args=system("cat .clang_complete | tr '\r\n' ' '")
+	let g:syntastic_cppcheck_config_file='.clang_complete'
+	let g:syntastic_cpp_checkers=['gcc'] ",'cpplint', 'cppclean', 'cppcheck']
+	
+	let g:syntastic_c_config_file='.clang_complete'
+	let g:syntastic_c_checkers=['gcc'] ", 'checkpatch', 'cpplint', 'cppclean', 'cppcheck']
+	let g:syntastic_c_cppclean_args=system("cat .clang_complete | tr '\r\n' ' '")
+	let g:syntastic_checkpatch_config_file='.clang_complete'
+
+
 endfunction
 call CCPP()
 
