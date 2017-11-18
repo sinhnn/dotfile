@@ -12,22 +12,33 @@ inf=$@
 entity_to_component="$(vhdl_entity_to_component.sh $@)"
 entity=$(echo "$entity_to_component" | head --lines=1 | awk '{print $2}')
 IFS=$'\n'
-dut=$(echo "${entity_to_component}" | \
-	sed 's/component//Ig;
-		s/is//Ig;
-		s/^[\t ]*end.*;//Ig;
-		s/port/port map/Ig;
-		s/generic/genereic map/Ig;
+# Separate generic and port map
+
+
+dgen=$(echo "${entity_to_component}" | \
+	awk 'BEGIN{IGNORECASE = 1};/^[\t ]*generic/,/^[\t ]*)[\t ]*;/' | \
+	sed 's/generic/generic map/Ig;
 		s/:.*;/=> ,/g;
 		s/:.*/=> /g;
 		s/.*=>/&&/g;
-		s/=> ,/,/g;
-		s/=>\s\+$//g;
-		s/=>[\t ]*/=> s_/g
-                /=>/s/^[\t ]*/        /g;
-                /port map/s/^[\t ]*/    /Ig;
-		/^[\t ]*);/s/^[\t ]*/    /g' \
-	| sed ':a;N;$!ba;s/\s*);[\n]    port map/\n    )\n    port map/g' #generic map()
-	)
-echo -e "DUT_${entity}:$dut"
+		s/\s*=>\s*$//g;
+		s/\s*=>\s*,$/,/g;
+		s/)\s*;/)/g
+	')
+
+pgen=$(echo "${entity_to_component}" | \
+	awk 'BEGIN{IGNORECASE = 1};/^[\t ]*port/,/^[\t ]*)[\t ]*;/' | \
+	sed 's/port/port map/Ig;
+		s/:.*;/=> ,/g;
+		s/:.*/=> /g;
+		s/.*=>/&&/g;
+		s/\s*=>\s*$//g;
+		s/\s*=>\s*,$/,/g;
+		s/=>\s*/=> s_/g;
+	')
+echo ""
+echo -e "DUT_${entity}: ${entity}"
+echo "${dgen}"
+echo "${pgen}"
+echo ""
 

@@ -15,16 +15,18 @@ pins=($(echo "$entity_to_component" | grep --ignore-case -e ":[\t ]*in "))
 pouts=($(echo "$entity_to_component" | grep --ignore-case -e ":[\t ]*out "))
 
 # ---------- Signal declaration
+echo ""
 for (( i = 0; i < ${#pins[*]}; i++ )); do
 	echo "${pins[$i]}" | sed 's/^[\t ]*//g;
-				s/^/\tsignal s_/g;
+				s/^/signal s_/g;
 				s/:[\t ]*in[\t ]*/: /Ig;
 				s/$/;/g;
 				s/;;$/;/g'
 done
+echo ""
 for (( i = 0; i < ${#pouts[*]}; i++ )); do
-	echo "${pouts[$i]}" | sed 's/^[\t ]*//g;
-				s/^/\tsignal s_/g;
+	echo "${pouts[$i]}" | sed 's/^\s*//g;
+				s/^/signal s_/g;
 				s/:[\t ]*out[\t ]*/: /Ig;
 				s/$/;/g;
 				s/;;$/;/g'

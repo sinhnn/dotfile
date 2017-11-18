@@ -19,18 +19,36 @@ echo ""
 grep --ignore-case "^library"  "${inf}"
 grep --ignore-case "^use"  "${inf}"
 echo ""
+echo "use std.textio.all;"
+echo "use ieee.std_logic_textio.all;"
+echo "use ieee.numeric_std.all;
+use std.env.all;
+"
+
 echo "entity tb_${entity} is"
 echo "end entity tb_${entity};"
 echo ""
 
 echo "architecture tb_${entity}_impl of tb_${entity} is"
-echo -e "$entity_to_component" | sed 's/^/\t/g'
+
+dgen=$(echo "${entity_to_component}" | \
+	awk 'BEGIN{IGNORECASE = 1};/^[\t ]*generic/,/^[\t ]*)[\t ]*;/' | \
+	grep ":" | \
+	sed 's/^\s*/    constant  /g;
+		 s/$/;/g
+		 s/;;/;/g'
+	)
+echo "    constant PERIOD : time := 10 ns;"
+echo "${dgen}"
+echo -e "$entity_to_component"  | sed 's/^/    /g'
 # ---------- Signal declaration
+vhdl_entity_to_signal.sh $@ | sed 's/^/    /g'
 
-vhdl_entity_to_signal.sh $@
-echo "begin"
+echo "begin
+
+    s_clk <= not s_clk after PERIOD/2;
+    s_rst <= '1' after 3 * PERIOD; "
 vhdl_entity_to_dut.sh "$@" | sed 's/^/    /g'
-
 vhdl_entity_to_readio.sh $@ | sed 's/^/    /g'
 echo "end architecture tb_${entity}_impl;"
 

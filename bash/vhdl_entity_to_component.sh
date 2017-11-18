@@ -28,6 +28,7 @@ do
 				s/\s*is\s*//Ig;
 				s/^\s*end\s*$/end component/Ig;
 				s/^\s*end\s*entity\s*;/end component;/Ig;
+				s/entity/component/Ig;
 				s/^\s*generic\s*(/    generic (\n        /Ig;
 				s/^\s*port\s*(/    port (\n        /Ig;
 				/in/Is/^\s*/        /g;
@@ -38,10 +39,11 @@ do
 			| sed ':a;N;$!ba;s/\s*)\s*;\s*\n*\s*port/\n    );\n    port/Ig' \
 			| sed ':a;N;$!ba;s/\s*)\s*;\s*\n*\s*end/\n    );\nend/Ig' \
 			| sed 's/^\s*component/component/g' \
-			| sed '/^$/d;/^\s*$/d;'
+			| sed '/^$/d;/^\s*$/d;s/\s*$//g;s/\s*;/;/g'  | column -ts ':' -o ':'
 	else # verilog or sv
-		awk 'BEGIN{IGNORECASE = 1};/^[\t ]*module/,/^[\t ]*);/' \
-			"${file}" \
-			| sed 's/module//Ig'
+		#awk 'BEGIN{IGNORECASE = 1};/^[\t ]*module/,/^[\t ]*);/' \
+		#	"${file}" \
+		#	| sed 's/module//Ig'
+		echo "Not VHDL file"
 	fi
 done

@@ -29,7 +29,7 @@ wire_ins=$(echo "${entity_to_component}" \
     | sed '/^\s*--/d' \
     | sed 's/^\s*//g' \
     | cut -f1 -d " " \
-    | sed 's/.*/        & <= v_&;/g'
+    | sed 's/.*/        s_& <= v_&;/g'
     )
 
 
@@ -39,15 +39,16 @@ wous=$(echo "${entity_to_component}" \
     | sed '/^\s*--/d' \
     | sed 's/^\s*//g' \
     | cut -f1 -d " " \
-    | sed 's/^/        read(iline, v_/g;s/$/); read(iline,aSpace);/g'
+    | sed 's/^/        write(iline, s_/g;s/$/); write(iline,aSpace);/g'
     )
 
 
 echo -e "
 READIO : process
-    variable iline : inline;
-    variable oline : inline;
+    variable iline : line;
+    variable oline : line;
     variable aSpace : character;
+	-- NOTEs: Change below variable to std_logic_vector or std_logic
 $(echo "${entity_to_component}" \
 	| grep -i -e ":\s*in\s*" \
 	| sed '/^\s*--/d' \
@@ -60,9 +61,11 @@ $(echo "${entity_to_component}" \
 )
     file inf : text;
     file ouf : text;
+
 begin
-    file_open(inf, "inf.txt",read_mode);
-    file_open(inf, "ouf.txt",write_mode);
+	wait until s_rst = '1';
+    file_open(inf, \"inf.txt\",read_mode);
+    file_open(ouf, \"ouf.txt\",write_mode);
 
     while not endfile(inf) loop
         readline(inf,iline);
@@ -70,12 +73,14 @@ ${rins[*]}
         -- Variable to signal
 ${wire_ins[*]}
         -- Wait for next input
-        wait for TIME;
+
+        wait until rising_edge(s_clk);
+	    wait for PERIOD/5.0;
         -- Write odata
 ${wous[*]}
         writeline(ouf,oline);
     end loop;
     file_close(inf);
-    file_open(ouf);
+    file_close(ouf);
 end process READIO;
 "
