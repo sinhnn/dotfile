@@ -97,8 +97,8 @@ function add_readio() {
 	f_port=${3}
 
 	f_port_no_rst_clk=$(echo "${f_port}" \
-		| sed '/[^[:space:]]*re?se?t[^[:space:]]*/Id' \
-		| sed '/[^[:space:]]*clo?c?k[^[:space:]]*/Id'
+		| grep --invert-match --ignore-case -E '[^[:space:]]*clo?c?k[^[:space:]]*' \
+		| grep --invert-match --ignore-case -E '[^[:space:]]*re?se?t[^[:space:]]*'
 		)
 
     rst=$(echo "${f_port}"  \
@@ -151,7 +151,7 @@ function add_readio() {
 		| xargs -d '\n' -I op echo "
 		real_equal(v_expected_op, s_op, 0.02,
 			LF & \"ouf_${entity_name}_testcase.txt:\" & integer'image(line_counter),
-			error)"
+			error);"
 	)
    
 	add_dut "${entity_name}" \
@@ -166,10 +166,15 @@ READIO : process
 	-- NOTEs: Change below variable to std_logic_vector or std_logic
 $(echo -e "${inports}" \
     	| sed '/^\s*--/d' \
-    	| sed 's/^\s*/    variable v_/g;s/\<in\>//g;s/$/;/g;s/;;$/;/g;')
+    	| sed 's/^\s*/    variable v_/g;s/\<in\>//g;s/$/;/g;s/;;$/;/g;' \
+		| sed 's/\<unsigned\>.*/integer;/g' \
+		| sed 's/\<std_logic_vector\>.*/integer;/g'
+		)
 $(echo -e "${outports}" \
     	| sed '/^\s*--/d' \
-    	| sed 's/^\s*/    variable v_expected_/g;s/\<out\>//g;s/$/;/g;s/;;$/;/g;')
+    	| sed 's/^\s*/    variable v_expected_/g;s/\<out\>//g;s/$/;/g;s/;;$/;/g;' \
+		| sed 's/\<unsigned\>.*/integer;/g' \
+		| sed 's/\<std_logic_vector\>.*/integer;/g')
 
 	file inf : text;
 	file ouf : text;
