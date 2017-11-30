@@ -1,0 +1,345 @@
+# vim: ft=sh
+################################################################################
+# Project name   : Generate skenetop for an entity_name
+# File name      : .local/bin/vhdl_tb.sh
+# Created date   : Thu 13 Apr 2017 03:08:16 PM +07
+# Author         : Ngoc-Sinh Nguyen
+# Last modified  : Thu 13 Apr 2017 03:08:16 PM +07
+# Guide          :
+###############################################################################
+#!/bin/bash
+
+# Common functions------------------------------------------------------------------------------
+function get_entity_declaration() {
+	#function_body
+	file="$@"
+	# in sed \s=[\t ]*
+	if [[ ${file##*.} = "vhd" || ${file##*.} = "vhdl" ]]; then
+		awk 'BEGIN{IGNORECASE = 1};/^[\t ]*entity/,/^[\t ]*end[\t ].*;/' \
+			"${file}" \
+			| sed '/;/s/;/;\n       /g;
+				s/--.*//g;
+				s/^\<entity\>/component/Ig;
+				s/^\s*\<entity\>/component/Ig;
+				s/\s*\<is\>\s*//Ig;
+				s/^\s*\<end\>\s*$/end component/Ig;
+				s/^\s*\<end\>\s*\<entity\>\s*;/end component;/Ig;
+				s/\<entity\>/component/Ig;
+				s/^\s*\<generic\>\s*(/    generic (\n        /Ig;
+				s/^\s*\<port\>\s*(/    port (\n        /Ig;
+				/\<in\>/Is/^\s*/        /g;
+				/\<out\>/Is/^\s*/        /g;
+				/^\s*\<port\>/Is/^\s*/    /g;
+				/^\s*\<generic\>/Is/^\s*/    /g;
+				/^\s*);/Is/^\s*/    /g;' \
+			| sed ':a;N;$!ba;s/\s*)\s*;\s*\n*\s*\<port\>/\n    );\n    port/Ig' \
+			| sed ':a;N;$!ba;s/\s*)\s*;\s*\n*\s*\<end\>/\n    );\nend/Ig' \
+			| sed 's/^\s*\<component\>/component/g' \
+			| sed '/^$/d;/^\s*$/d;s/\s*$//g;s/\s*;/;/g'  | column -ts ':' -o ':'
+	else # verilog or sv
+		#awk 'BEGIN{IGNORECASE = 1};/^[\t ]*module/,/^[\t ]*);/' \
+		#	"${file}" \
+		#	| sed 's/module//Ig'
+		echo "Not VHDL file"
+	fi
+}
+# Add components
+function add_component() {
+	f_entity=$1
+	f_generic=$2
+	f_port=$3
+
+echo "component $1"
+if [[ ! -z ${f_generic/ /} ]]; then
+	echo "    generic (
+	$(echo "${f_generic}" | sed '2,$s/^/        /g;1s/^/    /g')
+    );";
+fi
+echo "    port (
+	$(echo "${f_port}" | sed '2,$s/^/        /g;1s/^/    /g')
+    );"
+echo "end component $1;"
+}
+
+function add_dut() {
+	f_entity=${1}
+	f_generic=$(echo -e "${2}" | sed 's/^\s*//g;s/:.*//g;')
+	f_port=$(echo -e "${3}" | sed 's/^\s*//g;s/:.*//g;')
+
+echo "DUT_$1: $1"
+if [[ ! -z ${f_generic/ /} ]]; then
+	echo "    generic map ("
+	echo  "${f_generic}" | sed 's/.*/& => &,/g;s/^/       /g;' \
+		| sed '$s/,//g;s/\s*,/,/g'
+    echo "    )";
+fi
+
+echo "    port map ("
+echo  "${f_port}" | sed 's/.*/& => s_&,/g;s/^/       /g' \
+		| sed '$s/,//g;s/\s*,/,/g'
+echo "    );";
+}
+
+function add_signal() {
+	f_port=$1
+	echo  "${f_port}" \
+		| grep --invert-match --ignore-case -E '[^[:space:]]*clo?c?k[^[:space:]]*' \
+		| grep --invert-match --ignore-case -E '[^[:space:]]*re?se?t[^[:space:]]*' \
+		| sed 's/^\s*/signal s_/g;s/\<in\>//Ig;s/\<out\>//Ig;' \
+		| sed 's/[^;]$/&;/g' \
+		| column -t -s':' -o':'
+}
+
+
+function add_readio() {
+	f_entity=${1};
+	f_generic=${2};
+	f_port=${3}
+
+	f_port_no_rst_clk=$(echo "${f_port}" \
+		| sed '/[^[:space:]]*re?se?t[^[:space:]]*/Id' \
+		| sed '/[^[:space:]]*clo?c?k[^[:space:]]*/Id'
+		)
+
+    rst=$(echo "${f_port}"  \
+    	| grep --ignore-case -E -o "[^[:space:]]*re?se?t[^[:space:]]*")
+ 
+    clk=$(echo "${f_port}"  \
+    	| grep --ignore-case -E -o "[^[:space:]]*clo?c?k[^[:space:]]*")
+ 
+	inports=$(echo "${f_port_no_rst_clk}" \
+		| grep --ignore-case -E "\<in\>" \
+		| sed 's/^\s*//g')
+
+	outports=$(echo "${f_port_no_rst_clk}" \
+		| grep --ignore-case -E "\<out\>" \
+		| sed 's/^\s*//g')
+
+
+	# READ IN
+    read_inports=$(echo "${inports}" \
+        | cut -f1 -d " " \
+        | sed 's/^/        read(iline, v_/g;s/$/);\n        read(iline,aSpace);/g'
+        )
+    read_expected_outports=$(echo "${outports}" \
+        | cut -f1 -d " " \
+        | sed 's/^/        read(iline, v_expected_/g;s/$/);\n        read(iline,aSpace);/g' \
+        | sed '$d'
+        )
+ 
+    
+    connect_inports_to_variable=$(echo "${inports}" \
+        | cut -f1 -d " " \
+        | sed 's/.*/        s_& <= v_&;/g'
+        )
+    
+	# WRITE OUT
+    write_inports=$(echo "${inports}" \
+        | cut -f1 -d " " \
+        | sed 's/^/        write(oline, v_/g;s/$/);\n        write(oline,aSpace);/g'
+        )
+    write_outports=$(echo "${outports}" \
+        | cut -f1 -d " " \
+        | sed 's/^/        write(oline, s_/g;s/$/);\n        write(oline,aSpace);/g' \
+        | sed '$d'
+        )
+
+
+	# Compare actual output and expected outports		
+	compare_outports=$(echo "$outports"  \
+		| cut -f1 -d " " \
+		| xargs -d '\n' -I op echo "
+		real_equal(v_expected_op, s_op, 0.02,
+			LF & \"ouf_${entity_name}_testcase.txt:\" & integer'image(line_counter),
+			error)"
+	)
+   
+	add_dut "${entity_name}" \
+				"${generic_declaration}" "${port_declaration}";
+    echo -e "
+READIO : process
+	variable iline : line;
+	variable oline : line;
+	variable aSpace : character;
+	variable line_counter : integer := 0;
+
+	-- NOTEs: Change below variable to std_logic_vector or std_logic
+$(echo -e "${inports}" \
+    	| sed '/^\s*--/d' \
+    	| sed 's/^\s*/    variable v_/g;s/\<in\>//g;s/$/;/g;s/;;$/;/g;')
+$(echo -e "${outports}" \
+    	| sed '/^\s*--/d' \
+    	| sed 's/^\s*/    variable v_expected_/g;s/\<out\>//g;s/$/;/g;s/;;$/;/g;')
+
+	file inf : text;
+	file ouf : text;
+
+begin"
+[[ ! -z "${rst}" ]] && echo "    wait until s_${rst} = not RST_INIT;"
+echo "
+	file_open(inf, \"inf_${f_entity}_testcase.txt\",read_mode);
+	file_open(ouf, \"ouf_${f_entity}_testcase.txt\",write_mode);
+
+	while not endfile(inf) loop
+		line_counter := line_counter + 1;
+		readline(inf,iline);
+        if (iline'length = 0) or (iline(1) = '=')
+           or (iline(1) = '-') or (iline(1) = '#') then
+           writeline(ouf, iline);
+        end if;
+        next when (iline'length = 0) or (iline(1) = '=') or (iline(1) = '-');
+
+${read_inports[*]}
+${read_expected_outports[*]}
+		-- Variable to signal
+${connect_inports_to_variable[*]}
+		-- Wait for next input
+    
+		wait until rising_edge(s_${clk});
+		wait for PERIOD/5.0;
+		-- Write odata
+${write_inports[*]}
+${write_outports[*]}
+		writeline(ouf,oline);
+		-- Compare actual and expected values
+
+${compare_outports[*]}
+	end loop;
+	file_close(inf);
+	file_close(ouf);
+	finish(0);
+end process READIO;
+    "
+}
+
+
+function gen_tb() {
+
+	f_entity=$1
+	f_generic=$2
+	f_port=$3
+	f_file=$4
+
+	clk=$(echo "${f_port}" \
+		| grep --ignore-case -E -o "[^[:space:]]*clo?c?k[^[:space:]]*")
+	rst=$(echo "${f_port}"  \
+		| grep --ignore-case -E -o "[^[:space:]]*re?se?t[^[:space:]]*")
+	
+	# echo "Special: ${rst}, ${clk}"
+	## ---------- Start
+	cat ~/.vim/header/_.vhdl
+	echo ""
+	grep --ignore-case "^library"  "${f_file}"
+	grep --ignore-case "^use"  "${f_file}"
+	echo ""
+	echo "use std.textio.all;"
+	echo "use ieee.std_logic_textio.all;"
+	echo "use ieee.numeric_std.all;
+use std.env.all;
+	"
+	
+	
+	echo "entity tb_${f_entity} is"
+	echo "end entity tb_${f_entity};"
+	echo ""
+	
+	echo "architecture tb_${f_entity}_impl of tb_${f_entity} is"
+	
+	echo "    constant PERIOD : time := 10 ns;
+    constant RST_INIT : std_logic := '1';
+    constant CLK_INIT : std_logic := '1';
+	"
+	# Generate generic constant
+	echo "${f_generic}" | \
+		sed 's/^\s*/    constant  /g;
+			 s/$/;/g
+			 s/;;/;/g'
+
+	add_component "${f_entity}" "${f_generic}" "${f_port}" \
+		| sed 's/^/    /g'
+
+	[[ ! -z "${clk}" ]] && { echo "    signal s_${clk} : std_logic := CLK_INIT;"; }
+	[[ ! -z "${rst}" ]] && { echo "    signal s_${rst} : std_logic := RST_INIT;"; }
+	add_signal "${f_port}" \
+		| sed 's/^/    /g'
+	
+	echo "begin"
+	[[ ! -z "${clk}" ]] && echo "    s_${clk} <= not s_${clk} after PERIOD/2;"
+	[[ ! -z "${rst}" ]]  && echo  "    s_${rst} <= not RST_INIT after 3 * PERIOD; "
+
+	add_readio "${f_entity}" "${f_generic}" "${f_port}" \
+		| sed 's/^/    /g'
+	echo "end architecture tb_${f_entity}_impl;"
+
+
+}
+
+
+# ------------------------------------------------------------------------------
+
+iFS=$'\n'
+inf=${!#}
+
+# entity_name declare
+entity_declaration="$(get_entity_declaration ${inf})"
+entity_name=$(echo "$entity_declaration" | head --lines=1 | awk '{print $2}')
+
+port_declaration=$(echo "$entity_declaration" \
+	| grep --ignore-case  '\<in\>\|\<out\>' \
+	| sed 's/^\s*//g'
+	)
+generic_declaration=$(echo "$entity_declaration" \
+	| grep --ignore-case --invert-match  '\<in\>\|\<out\>' \
+	| grep -o '\<[^[:space:]]*\>\s*:.*' \
+	| sed 's/^\s*//g'
+	)
+
+
+#while true ; do
+for (( i = 0; i < $# + 1; i++ )); do
+    case "$1" in
+        -h|--help)
+			echo "$0 --component --signal --dut --readio --tb file.vhd";
+			exit 0;;
+        --component)
+	 		add_component "${entity_name}" "${generic_declaration}" \
+				"${port_declaration}";
+			shift;;
+        --signal)
+	 		add_signal "${port_declaration}";
+			shift;;
+        --dut)
+			add_dut "${entity_name}" \
+				"${generic_declaration}" "${port_declaration}";
+			shift;;
+        --readio)
+			add_readio "${entity_name}" \
+				"${generic_declaration}" "${port_declaration}";
+				exit 0;
+				shift;;
+        --tb)
+			gen_tb "${entity_name}" "${generic_declaration}" \
+				"${port_declaration}" "${inf}" ;
+			exit 0;
+			shift;;
+
+    esac
+done
+
+
+# [[ "$@" == *" --help"* ]] && \
+# 	{ echo "$0 --component --signal --dut --readio --tb file.vhd"; \
+# 	exit; }
+
+
+# [[ "$@" == *"--component"* ]] &&  \
+	# { add_component "${entity_name}" "${generic_declaration}" \
+		# "${port_declaration}"; }
+
+# [[ "$@" == *"--signal"* ]] && \
+	# { add_signal "${port_declaration}" ;}
+
+# [[ "$@" == *"--dut"* ]] && \
+	# { add_dut "${entity_name}" "${generic_declaration}" "${port_declaration}"; }
+
+
