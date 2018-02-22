@@ -1,17 +1,18 @@
 snippet header
+-- vim: set tabstop=4 shiftwidth=4:
 -------------------------------------------------------------------------------
--- Title       : ${1:Title}
+-- Title       : ${1:Histogram of oriented gradient}
 -- Project     :
 -------------------------------------------------------------------------------
 -- File        : ${2:`!p snip.rv = (snip.basename or "name")`}
 -- Author      : ${3:`!v g:snips_author`}
 -- Emails      : ${4:`!v g:mail`}
 -- Created     : ${5:`date`}
--- Modified	   :
+-- Modified    :
 -- Platform    :
 -- Standard    :
 -------------------------------------------------------------------------------
--- Description: $0
+-- Description : $0
 -------------------------------------------------------------------------------
 endsnippet
 
@@ -26,6 +27,12 @@ end $1;
 architecture ${2:rtl_$1} of $1 is
 begin
 end $2;
+endsnippet
+
+snippet package "package ... end package ; | architecture ...;"
+package ${1:`!p snip.rv = (snip.basename or "name")`}_pkg is
+$0
+end package $1_pkg;
 endsnippet
 
 snippet libs "library IEEE; | use IEEE.STD_LOGIC_1164.ALL;"
