@@ -1,10 +1,12 @@
+export DE=mate
+/usr/libexec/mate-notification-daemon
+/usr/libexec/mate-settings-daemon
 nm-applet
 goldendict
 ibus-daemon
-pidgin
+#pidgin
 thunderbird
 mate-panel
-/usr/libexec/mate-notification-daemon
 system-config-printer-applet
-xscreensaver
-export DE=mate
+mate-screensaver
+mate-volume-control-applet

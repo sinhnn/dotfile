@@ -1,55 +1,53 @@
-if exists("loaded_codestyle")
-	finish
-endif
-let loaded_codestyle=1
-
-" Update file name, date modified  function
-function UpdateDF()
-  :mark l
-  :silent! %s/!!DATE/\=  strftime("%c")/g
-  :silent! %s/!!FILE/\=  expand("%")/g
-  " Follow jinja2
-  :silent! %s/{{ date }}/\=  strftime("%c")/g
-  :silent! %s/{{ file }}/\=  expand("%")/g
-  :silent! %s/{{ file_without_extension }}/\=  expand("%:r")/g
-  :silent! %s/File name.*/\='File name      : ' . expand("%")/g
-  :silent! %s/Last modified.*/\='Last modified  : '.strftime("%c")/g
-  :'l
-  :delmarks l
-endfunction
+"if exists("loaded_codestyle")
+"	finish
+"endif
+"let loaded_codestyle=1
+"
+"" Update file name, date modified  function
+"function UpdateDF()
+"  :mark l
+"  :silent! %s/!!DATE/\=  strftime("%c")/g
+"  :silent! %s/!!FILE/\=  expand("%")/g
+"  " Follow jinja2
+"  :silent! %s/{{ date }}/\=  strftime("%c")/g
+"  :silent! %s/{{ file }}/\=  expand("%")/g
+"  :silent! %s/{{ file_without_extension }}/\=  expand("%:r")/g
+"  :silent! %s/File name.*/\='File name      : ' . expand("%")/g
+"  :silent! %s/Last modified.*/\='Last modified  : '.strftime("%c")/g
+"  :'l
+"  :delmarks l
+"endfunction
 
 
 " ------------------------ Check Coding Style ---------------------------
-highlight ColorColumn ctermbg=Black ctermfg=DarkRed
-highlight ExtraWhitespace ctermbg=red guibg=red
+"highlight ColorColumn ctermbg=Black ctermfg=DarkRed
+"highlight ExtraWhitespace ctermbg=red guibg=red
 
-function CheckStyle()
-    set colorcolumn=+1
-    match ExtraWhitespace /\s\+$/
-    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-    autocmd BufWinLeave * call clearmatches()
-	let g:syntastic_cpp_checkers=['gcc','cpplint', 'cppclean', 'cppcheck']
-	let g:syntastic_c_checkers=['gcc', 'checkpatch', 'cpplint', 'cppclean', 'cppcheck']
-endfunction
+"function CheckStyle()
+"    set colorcolumn=+1
+"    match ExtraWhitespace /\s\+$/
+"    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+"    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+"    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+"    autocmd BufWinLeave * call clearmatches()
+"endfunction
 
 " Check style before public
-function BeforePublic()
-    match ExtraWhitespace /\s\+$\|^\t\+\|!!FILE\|!!DATE\|\* Desc\s*:$/
-    autocmd BufWinLeave * call clearmatches()
-endfunction
-
-function UnCheckStyle()
-    set cc=
-    highlight clear ExtraWhitespace
-	let g:syntastic_cpp_checkers=['gcc']
-	let g:syntastic_c_checkers=['gcc']
-endfunction
-
-fun ClearTrailingSpace()
-    :%s/\s\+$//g
-endf
+"function BeforePublic()
+"    match ExtraWhitespace /\s\+$\|^\t\+\|!!FILE\|!!DATE\|\* Desc\s*:$/
+"    autocmd BufWinLeave * call clearmatches()
+"endfunction
+"
+"function UnCheckStyle()
+"    set cc=
+"    highlight clear ExtraWhitespace
+"	let g:syntastic_cpp_checkers=['gcc']
+"	let g:syntastic_c_checkers=['gcc']
+"endfunction
+"
+"fun ClearTrailingSpace()
+"    :%s/\s\+$//g
+"endf
 
 " -----------------------------------------------------------------------
 function! FillLine( str )
@@ -70,16 +68,16 @@ endfunction
 " Shortcuts  -------------------------------------------------------------------
 command UpdateDF call UpdateDF()
 command! -nargs=1 FillLine call FillLine(<f-args>)
-command ClearTrailingSpace call ClearTrailingSpace()
-command CheckStyle call CheckStyle()
-command UnCheckStyle call UnCheckStyle()
-command BeforePublic call BeforePublic()
+"command ClearTrailingSpace call ClearTrailingSpace()
+"command CheckStyle call CheckStyle()
+"command UnCheckStyle call UnCheckStyle()
+"command BeforePublic call BeforePublic()
 
-autocmd bufnewfile *.{c,cpp,h,hpp,sv,v,c++}  0r ~/.vim/header/_.c
-autocmd bufnewfile *.{vhd,vhdl}  0r ~/.vim/header/_.vhd
-autocmd bufnewfile *.sh  0r ~/.vim/header/_.sh
-autocmd bufnewfile *.py  0r ~/.vim/header/_.py
-autocmd bufnewfile *.tex  0r ~/.vim/header/_.tex
+"autocmd bufnewfile *.{c,cpp,h,hpp,sv,v,c++}  0r ~/.vim/header/_.c
+"autocmd bufnewfile *.{vhd,vhdl}  0r ~/.vim/header/_.vhd
+"autocmd bufnewfile *.sh  0r ~/.vim/header/_.sh
+"autocmd bufnewfile *.py  0r ~/.vim/header/_.py
+"autocmd bufnewfile *.tex  0r ~/.vim/header/_.tex
 
 autocmd bufnewfile * call UpdateDF()
 au bufnewfile {cpp,c,make,sh,vhdl,verilog,systemverilog,tex} call CheckStyle ()
