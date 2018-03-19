@@ -22,6 +22,7 @@ Plug 'https://github.com/vim-scripts/visualrepeat'
 Plug 'https://github.com/endel/vim-github-colorscheme'
 Plug 'altercation/vim-colors-solarized'
 Plug 'https://github.com/dracula/vim'
+Plug 'https://github.com/jeffkreeftmeijer/vim-dim'
 " Common programming langugages
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -31,6 +32,7 @@ Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
 Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdcommenter'
+Plug 'https://github.com/scrooloose/nerdtree'
 "Plug 'https://github.com/JamshedVesuna/vim-markdown-preview'
 " C/C++
 " HDL
@@ -40,29 +42,29 @@ Plug 'nachumk/systemverilog.vim'
 call plug#end()
 " -------------------- Common -------------------------------------------
 set t_Co=256
-let g:solarized_termcolors=256
-let g:solarized_termtrans = 1
-syntax enable
 set background=dark
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+syntax enable
 colorscheme solarized
 
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
 endif
 if has('gui_running')
-	set guifont=Noto\ Mono\ 12
-	set lines=80
-	set columns=100
+	set guifont=Noto\ Mono\ 9
 	set number
 	map <S-Insert> <MiddleMouse>
 	inoremap <S-Insert> <MiddleMouse>
 	cmap <S-Insert> <MiddleMouse>
+	let $PATH .= ':/home/sinhnn/.bin/'
 endif
 
 set wildmenu
 set wildmode=list:longest,full,full
 set completeopt+=menu,preview
 set shiftwidth=4
+set tabstop=4
 set incsearch
 set hlsearch
 set undolevels=100
@@ -71,6 +73,7 @@ set showmatch
 set showfulltag
 set textwidth=79
 set colorcolumn=+1
+set modeline
 "set laststatus=2
 "set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 autocmd VimLeave * mksession! ~/.last_session.vim
@@ -80,6 +83,8 @@ command! CloseHiddenBuffers call s:CloseHiddenBuffers()
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 map <c-u> :Snippets<cr>
+map <c-n> : NERDTreeToggle<cr>
+imap <c-u> <ESC>:Snippets<cr>
 
 let g:ctrlp_cmd = 'CtrlP'
 " Plug 'mileszs/ack.vim'
@@ -89,17 +94,17 @@ let g:ackprg = 'ag --vimgrep'
 "  or point to systemc in Questasim/Modelsim
 let g:author="sinhnn"
 let g:mail="sinhnn.92@gmail.com"
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq   = 0
-let g:syntastic_tex_checkers  = ['lacheck']
-let g:syntastic_cpp_checkers  = ['gcc', 'cpplint', 'cppclean']
-let g:syntastic_c_checkers    = ['gcc', 'cpplint', 'cppclean']
+"let g:syntastic_always_populate_loc_list = 0
+"let g:syntastic_auto_loc_list = 0
+"let g:syntastic_check_on_open = 0
+"let g:syntastic_check_on_wq   = 0
+"let g:syntastic_tex_checkers  = ['lacheck']
+"let g:syntastic_cpp_checkers  = ['gcc', 'cpplint', 'cppclean']
+"let g:syntastic_c_checkers    = ['gcc', 'cpplint', 'cppclean']
 " --- Plug 'junegunn/vim-easy-align'  ------------------------------------------
 let g:easy_align_delimiters = {
 	\ ':': { 'pattern': ':', 'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
-	\ ')': { 'pattern': ')', 'left_margin': 1, 'right_margin': 0, 'stick_to_left': 0 },
+	\ ')': {'pattern': ')', 'left_margin': 1, 'right_margin': 0, 'stick_to_left': 0 },
 	\ '(': { 'pattern': '(', 'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
 	\ }
 " --- Plug 'junegunn/fzf.vim'  -------------------------------------------------
@@ -111,6 +116,7 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 " Load my scripts  -------------------------------------------------------------
 au FileType {tex,latex} let g:indentLine_conceallevel=0
 au BufWritePost *.{cpp,h,hpp} source ~/.vim/svim/systemc.vim
+source ~/.vim/svim/code_style.vim
 au FileType {vhdl,vhd} source ~/.vim/svim/hdl.vim
 au FileType {haskell} set expandtab
 " --- Plug 'SirVer/ultisnips'  -------------------------------------------------

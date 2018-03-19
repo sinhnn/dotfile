@@ -29,7 +29,8 @@ iabb << sll
 iabb >> srl
 iabb slr srl
 
-
+command! -nargs=1 -complete=file  VHDLinstance   execute ":r!vhdl_entity_to --dut " . <f-args>
+command! -nargs=1 -complete=file  VHDLsignal   execute ":r!vhdl_entity_to --signal " . <f-args>
 "if exists("b:loaded_hdl")
 "	finish
 "endif
@@ -37,6 +38,7 @@ iabb slr srl
 " VHDL  ------------------------------------------------------------------------
 setlocal comments=:--
 set expandtab
+set errorformat=\*\*\ %tRROR:\ %f(%l):\ %m,\*\*\ %tRROR:\ %m,\*\*\ %tARNING:\ %m,\*\*\ %tOTE:\ %m,%tRROR:\ %f(%l):\ %m,%tARNING\[%*[0-9]\]:\ %f(%l):\ %m,%tRROR:\ %m,%tARNING\[%*[0-9]\]:\ %m
 " ---- Plug 'suoto/vim-hdl'  ---------------------------------------------------
 let g:vimhdl_conf_file = 'msim.prj'
 let g:syntastic_vhdl_compiler = 'vcom'

@@ -17,16 +17,38 @@ snippet header
 endsnippet
 
 snippet template "entity ... generic port ; | architecture ...;"
-entity ${1:`!p snip.rv = (snip.basename or "name")`} is
+-- vim: set tabstop=4 shiftwidth=4:
+-------------------------------------------------------------------------------
+-- Title       : ${1:Histogram of oriented gradient}
+-- Project     :
+-------------------------------------------------------------------------------
+-- File        : ${2:`!p snip.rv = (snip.basename or "name")`}
+-- Author      : ${3:`!v g:snips_author`}
+-- Emails      : ${4:`!v g:mail`}
+-- Created     : ${5:`date`}
+-- Modified    :
+-- Platform    :
+-- Standard    :
+-------------------------------------------------------------------------------
+-- Description : $0
+-------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity ${6:`!p snip.rv = (snip.basename or "name")`} is
 	generic(
 		$0
 	);
 	port(
 	);
-end $1;
-architecture ${2:rtl_$1} of $1 is
+end $6;
+architecture ${7:rtl_$6} of $6 is
+
 begin
-end $2;
+
+end $7;
 endsnippet
 
 snippet package "package ... end package ; | architecture ...;"
@@ -62,11 +84,11 @@ endsnippet
 snippet fun "function ...; | function ...;"
 function ${1:name}
 	(
-		$0
+		$2
 	)
-	return ${2:return} is
+	return ${3:std_logic_vector} is
 begin
-
+	$0
 end function $1;
 endsnippet
 
@@ -99,7 +121,8 @@ type ${1} is (${2});
 endsnippet
 
 snippet pro "process(...) ..."
-process(${VISUAL}${0})
+process(${1:sensitive list})
+	$0
 begin
 end process;
 endsnippet
@@ -119,7 +142,9 @@ end if;
 endsnippet
 
 snippet case "case ... is ..."
-case ${VISUAL}${0} is
+case ${1:signal} is
+	when ${2:constant} =>
+		$0
 	when others => null;
 end case;
 endsnippet
@@ -128,8 +153,8 @@ snippet var "variable"
 variable  : $0;
 endsnippet
 
-snippet sig "signal"
-signal    : $0;
+snippet signal "signal"
+signal $1 : $0;
 endsnippet
 
 snippet tou "to_unsigned(signal, width)"
@@ -141,19 +166,19 @@ to_unsigned(${1:signal}, ${2:integer width}, ${3:fractional width})$0
 endsnippet
 
 snippet rst_syn "Syncrhonous reset"
-p_${1:RESET}: process (${2:i_clk}) is
+process (${1:i_clk}) is
 begin
-	if rising_edge($2) then
-		if ${3:i_rst_sync} = '1' then
+	if rising_edge($1) then
+		if ${2:i_rst_sync} = '1' then
 			$0
 		else
-		end if; --$3
-	end if; -- $2
-end process; -- p_$1
+		end if; --$2
+	end if; -- $1
+end process;
 endsnippet
 
 snippet arst "Asyncrhonous reset"
-p_ARESET: process (${1:i_clk}) is
+process (${1:i_clk}) is
 begin
 	if ${2:i_arst} = '1' then
 		$0
@@ -167,5 +192,15 @@ endsnippet
 snippet forg "For generate"
 gen_${1:GENERATE}: for i in ${2:0} to ${3:MAX} generate
 	$0
-end gen_$1;
+end generate gen_$1;
+endsnippet
+
+snippet record "type .... is record | end record;"
+type ${1:t_record} is record
+	$0
+end record $1;
+endsnippet
+
+snippet assert "assert <condition>  report <message> severity <severity level>"
+assert ${1:condition} report "${2:message}" severity ${3:error};
 endsnippet

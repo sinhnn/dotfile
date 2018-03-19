@@ -66,7 +66,7 @@ endfunction
 
 
 " Shortcuts  -------------------------------------------------------------------
-command UpdateDF call UpdateDF()
+"command UpdateDF call UpdateDF()
 command! -nargs=1 FillLine call FillLine(<f-args>)
 "command ClearTrailingSpace call ClearTrailingSpace()
 "command CheckStyle call CheckStyle()
@@ -79,5 +79,5 @@ command! -nargs=1 FillLine call FillLine(<f-args>)
 "autocmd bufnewfile *.py  0r ~/.vim/header/_.py
 "autocmd bufnewfile *.tex  0r ~/.vim/header/_.tex
 
-autocmd bufnewfile * call UpdateDF()
-au bufnewfile {cpp,c,make,sh,vhdl,verilog,systemverilog,tex} call CheckStyle ()
+"autocmd bufnewfile * call UpdateDF()
+"au bufnewfile {cpp,c,make,sh,vhdl,verilog,systemverilog,tex} call CheckStyle ()
