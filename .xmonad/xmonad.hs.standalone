@@ -256,7 +256,7 @@ keys' conf@(XConfig {XMonad.modMask = winKey}) = M.fromList $
     , ((winKey,               xK_l     ), sendMessage Expand)
     , ((winKey,               xK_d     ), viewEmptyWorkspace)
     -- quit, or restart
-    -- , ((winKey .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((winKey .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((winKey              , xK_q     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
     ]
     ++

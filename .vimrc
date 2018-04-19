@@ -33,11 +33,14 @@ Plug 'Yggdroot/indentLine'
 Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdcommenter'
 Plug 'https://github.com/scrooloose/nerdtree'
+Plug 'https://github.com/vim-scripts/vim-nerdtree_plugin_open'
 "Plug 'https://github.com/JamshedVesuna/vim-markdown-preview'
 " C/C++
 " HDL
 Plug 'Kocha/vim-systemc'
 Plug 'nachumk/systemverilog.vim'
+"
+"Plug 'https://github.com/matze/vim-tex-fold'
 "
 call plug#end()
 " -------------------- Common -------------------------------------------
@@ -46,7 +49,6 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 syntax enable
-colorscheme solarized
 
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
@@ -54,6 +56,7 @@ endif
 if has('gui_running')
 	set guifont=Noto\ Mono\ 9
 	set number
+	colorscheme solarized
 	map <S-Insert> <MiddleMouse>
 	inoremap <S-Insert> <MiddleMouse>
 	cmap <S-Insert> <MiddleMouse>
@@ -78,6 +81,8 @@ set modeline
 "set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 autocmd VimLeave * mksession! ~/.last_session.vim
 let mapleader = ','
+map <leader>gf :e <cfile><cr>
+
 command! CloseHiddenBuffers call s:CloseHiddenBuffers()
 
 xmap ga <Plug>(EasyAlign)
@@ -86,21 +91,12 @@ map <c-u> :Snippets<cr>
 map <c-n> : NERDTreeToggle<cr>
 imap <c-u> <ESC>:Snippets<cr>
 
+let g:nerdtree_plugin_open_cmd = 'xdg-open'
 let g:ctrlp_cmd = 'CtrlP'
 " Plug 'mileszs/ack.vim'
 let g:ackprg = 'ag --vimgrep'
-" --- Plug 'scrooloose/syntastic'  ---------------------------------------------
-"  Notes: if g:syntastic_cpp_compiler='sccom', make sure empty SYSTEMC_HOME env
-"  or point to systemc in Questasim/Modelsim
 let g:author="sinhnn"
 let g:mail="sinhnn.92@gmail.com"
-"let g:syntastic_always_populate_loc_list = 0
-"let g:syntastic_auto_loc_list = 0
-"let g:syntastic_check_on_open = 0
-"let g:syntastic_check_on_wq   = 0
-"let g:syntastic_tex_checkers  = ['lacheck']
-"let g:syntastic_cpp_checkers  = ['gcc', 'cpplint', 'cppclean']
-"let g:syntastic_c_checkers    = ['gcc', 'cpplint', 'cppclean']
 " --- Plug 'junegunn/vim-easy-align'  ------------------------------------------
 let g:easy_align_delimiters = {
 	\ ':': { 'pattern': ':', 'left_margin': 1, 'right_margin': 1, 'stick_to_left': 0 },
@@ -114,6 +110,7 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 " Load my scripts  -------------------------------------------------------------
+let g:tex_flavor = "latex"
 au FileType {tex,latex} let g:indentLine_conceallevel=0
 au BufWritePost *.{cpp,h,hpp} source ~/.vim/svim/systemc.vim
 source ~/.vim/svim/code_style.vim
@@ -121,9 +118,6 @@ au FileType {vhdl,vhd} source ~/.vim/svim/hdl.vim
 au FileType {haskell} set expandtab
 " --- Plug 'SirVer/ultisnips'  -------------------------------------------------
 let g:snips_author=g:author
-"let g:header_auto_add_header = 0
-"let g:header_field_author =g:author
-"let g:header_field_author_email = g:mail
 " --- Plug 'vim-scripts/DoxygenToolkit.vim'  -----------------------------------
 let g:DoxygenToolkit_authorName=g:author
 if (expand('%:e') =='vhd')
