@@ -129,6 +129,15 @@ if (expand('%:e') =='vhd')
 	let g:DoxygenToolkit_interCommentBlock = "-- "
 endif
 
+"command! -nargs=1 NERDTreeOnlyFileType :let NERDTreeIgnore += ['\(\.<f-args>\)\@<!$[[file]]']
+command! -nargs=1 NERDTreeShowOnlyFileType exec
+			\"let NERDTreeIgnore =  ['\\(\\." . <f-args> . "\\\)\\@<!$[[file]]'] \| NERDTree"
+
+" fun! NERDTreeOnlyFileType(ext)
+" 	:let NERDTreeIgnore += ['\(\.ext\)\@<!$[[file]]']
+" 	:NERDTree
+" endf
+
 function! s:CloseHiddenBuffers()
   let open_buffers = []
 
