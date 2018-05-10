@@ -53,10 +53,10 @@ syntax enable
 if has('nvim')
     let g:deoplete#enable_at_startup = 1
 endif
+colorscheme solarized
 if has('gui_running')
 	set guifont=Noto\ Mono\ 9
 	set number
-	colorscheme solarized
 	map <S-Insert> <MiddleMouse>
 	inoremap <S-Insert> <MiddleMouse>
 	cmap <S-Insert> <MiddleMouse>
@@ -77,6 +77,7 @@ set showfulltag
 set textwidth=79
 set colorcolumn=+1
 set modeline
+set visualbell
 "set laststatus=2
 "set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 autocmd VimLeave * mksession! ~/.last_session.vim
@@ -133,6 +134,7 @@ endif
 command! -nargs=1 NERDTreeShowOnlyFileType exec
 			\"let NERDTreeIgnore =  ['\\(\\." . <f-args> . "\\\)\\@<!$[[file]]'] \| NERDTree"
 
+command! NERDTreeShowOnlyC NERDTreeShowOnlyFileType c\|h\|cpp\|hpp
 " fun! NERDTreeOnlyFileType(ext)
 " 	:let NERDTreeIgnore += ['\(\.ext\)\@<!$[[file]]']
 " 	:NERDTree
