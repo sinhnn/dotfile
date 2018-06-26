@@ -1,0 +1,41 @@
+set t_Co=256
+set background=dark
+syntax enable
+
+set wildmenu
+set wildmode=list:longest,full,full
+set completeopt+=menu,preview
+set shiftwidth=4
+set tabstop=4
+set incsearch
+set hlsearch
+set undolevels=100
+set history=100
+set showmatch
+set showfulltag
+set textwidth=79
+set colorcolumn=+1
+set modeline
+set visualbell
+set laststatus=2
+"set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
+autocmd VimLeave * mksession! ~/.last_session.vim
+let mapleader = ','
+map <leader>gf :e <cfile><cr>
+
+command! CloseHiddenBuffers call s:CloseHiddenBuffers()
+
+" --- Plug 'junegunn/vim-easy-align'  ------------------------------------------
+function! s:CloseHiddenBuffers()
+  let open_buffers = []
+
+  for i in range(tabpagenr('$'))
+    call extend(open_buffers, tabpagebuflist(i + 1))
+  endfor
+
+  for num in range(1, bufnr("$") + 1)
+    if buflisted(num) && index(open_buffers, num) == -1
+      exec "bdelete ".num
+    endif
+  endfor
+endfunction
