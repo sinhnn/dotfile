@@ -23,6 +23,8 @@ Plug 'https://github.com/endel/vim-github-colorscheme'
 Plug 'altercation/vim-colors-solarized'
 Plug 'https://github.com/dracula/vim'
 Plug 'https://github.com/jeffkreeftmeijer/vim-dim'
+Plug 'https://github.com/Erichain/vim-monokai-pro.git'
+
 " Common programming langugages
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -37,8 +39,8 @@ Plug 'https://github.com/vim-scripts/vim-nerdtree_plugin_open'
 "Plug 'https://github.com/JamshedVesuna/vim-markdown-preview'
 " C/C++
 " HDL
-Plug 'Kocha/vim-systemc'
-Plug 'nachumk/systemverilog.vim'
+"Plug 'Kocha/vim-systemc'
+"Plug 'nachumk/systemverilog.vim'
 "
 "Plug 'https://github.com/matze/vim-tex-fold'
 "
@@ -46,22 +48,15 @@ call plug#end()
 " -------------------- Common -------------------------------------------
 set t_Co=256
 set background=dark
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
 syntax enable
+colorscheme dracula
 
-if has('nvim')
-    let g:deoplete#enable_at_startup = 1
-endif
-colorscheme solarized
-if has('gui_running')
-	set guifont=Noto\ Mono\ 9
-	set number
-	map <S-Insert> <MiddleMouse>
-	inoremap <S-Insert> <MiddleMouse>
-	cmap <S-Insert> <MiddleMouse>
-	let $PATH .= ':/home/sinhnn/.bin/'
-endif
+set number
+map <S-Insert> <MiddleMouse>
+inoremap <S-Insert> <MiddleMouse>
+cmap <S-Insert> <MiddleMouse>
 
 set wildmenu
 set wildmode=list:longest,full,full
@@ -75,10 +70,11 @@ set history=100
 set showmatch
 set showfulltag
 set textwidth=79
-set colorcolumn=+1
+"set colorcolumn=+1
+set colorcolumn=0
 set modeline
 set visualbell
-"set laststatus=2
+set laststatus=2
 "set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 autocmd VimLeave * mksession! ~/.last_session.vim
 let mapleader = ','
