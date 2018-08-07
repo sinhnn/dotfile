@@ -57,6 +57,10 @@ set number
 map <S-Insert> <MiddleMouse>
 inoremap <S-Insert> <MiddleMouse>
 cmap <S-Insert> <MiddleMouse>
+# UTF-8 (Vietnamese)
+set enc=utf-8
+set fileencodings=utf-8
+set fileformats=unix,dos,mac
 
 set wildmenu
 set wildmode=list:longest,full,full
