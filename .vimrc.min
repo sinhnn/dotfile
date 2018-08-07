@@ -1,6 +1,10 @@
 set t_Co=256
 set background=dark
 syntax enable
+# UTF8 (Vietnamese)
+set enc=utf-8
+set fileencodings=utf-8
+set fileformats=unix,dos,mac
 
 set wildmenu
 set wildmode=list:longest,full,full
