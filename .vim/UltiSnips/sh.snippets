@@ -18,5 +18,8 @@ do
 done
 [[ "${inf}" ]]  || { usage; exit 1; }
 [[	-f "${inf}" ]] || { echo "${inf}: No such file"; exit 1; }
+endsnippet
 
+snippet ROOT_DIR	"Root directory, support creating env.sh"
+ROOT_DIR=\$(dirname \$(readlink -f \${BASH_SOURCE[0]}))
 endsnippet

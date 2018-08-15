@@ -57,7 +57,7 @@ set number
 map <S-Insert> <MiddleMouse>
 inoremap <S-Insert> <MiddleMouse>
 cmap <S-Insert> <MiddleMouse>
-# UTF-8 (Vietnamese)
+" UTF-8 (Vietnamese)
 set enc=utf-8
 set fileencodings=utf-8
 set fileformats=unix,dos,mac
@@ -90,7 +90,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 map <c-u> :Snippets<cr>
 map <c-n> : NERDTreeToggle<cr>
-imap <c-u> <ESC>:Snippets<cr>
+"imap <c-u> <ESC>:Snippets<cr>
 
 let g:nerdtree_plugin_open_cmd = 'xdg-open'
 let g:ctrlp_cmd = 'CtrlP'
