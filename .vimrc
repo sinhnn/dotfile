@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/vim-scripts/let-modeline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/tmhedberg/matchit'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', {'do': './install --all'}
 Plug 'junegunn/fzf.vim'
 if has('nvim')
@@ -108,7 +109,8 @@ let g:easy_align_delimiters = {
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 set rtp+=~/.fzf
 imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-j> <plug>(fzf-complete-file)
+"imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 " Load my scripts  -------------------------------------------------------------
 let g:tex_flavor = "latex"
