@@ -29,15 +29,15 @@ $0
 endsnippet
 
 snippet file_exist "File is exist ?"
-[[ -f "${1:}" ]] ${2:||} { echo "Error: File '$1' dose not exist."; exit 1; } 
+[[ -f "${1:}" ]] ${2:||} { ${3:echo "Error: File '$1' dose not exist."; exit 1;} } 
 $0
 endsnippet 
 
 snippet dir_exist "Directory is exist ?"
-[[ -d "${1:}" ]] ${2:||} { echo "Error: File '$1' dose not exist."; exit 1; } 
+[[ -d "${1:}" ]] ${2:||} { ${3:echo "Error: Directory '$1' dose not exist."; exit 1;} }
 $0
 endsnippet
 
 snippet arg_is_empty "Variable is empty ?"
-[[ -z "${$1// }" ]] && { echo "${2:Error}: \${${1:}} is empty."; ${3:exit 1}; }
+[[ -z "${$1// }" ]] ${2:&&} { ${3:echo "${2:Error}: \${${1:}} is empty."; ${3:exit 1};} }
 endsnippet
