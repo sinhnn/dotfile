@@ -39,5 +39,5 @@ $0
 endsnippet
 
 snippet arg_is_empty "Variable is empty ?"
-[[ -z "${$1// }" ]] ${2:&&} { ${3:echo "${2:Error}: \${${1:}} is empty."; ${3:exit 1};} }
+[[ -z "${$1// }" ]] ${2:&&} { ${3:echo "Error: \${${1:}} is empty."; ${3:exit 1};} }
 endsnippet
