@@ -1,8 +1,8 @@
 " File              : .vimrc
 " Author            : sinhnn <sinhnn.92@gmail.com>
 " Date              : 06.01.2018
-" Last Modified Date: 08.09.2018
-" Last Modified By  : sinhnn
+" Last Modified Date: 11.09.2018
+" Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 call plug#begin('~/.vim/plugged')
 " Ultility
 Plug 'airblade/vim-gitgutter'
@@ -63,6 +63,7 @@ set number
 set enc=utf-8
 set fileencodings=utf-8
 set fileformats=unix,dos,mac
+highlight StatusLine cterm=bold ctermfg=white ctermbg=blue
 
 map <S-Insert> <MiddleMouse>
 inoremap <S-Insert> <MiddleMouse>
@@ -94,8 +95,12 @@ imap <c-x><c-j> <plug>(fzf-complete-file)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
 map <c-n> : NERDTreeToggle<cr>
+command! -nargs=1 ShowOnlyFileType exec "NERDTreeShowOnlyFileType " . <f-args>
+command! ShowOnlyC NERDTreeShowOnlyFileType c\|h\|cpp\|hpp
+command! ShowOnlyPy NERDTreeShowOnlyFileType py
+
 command! -nargs=1 NERDTreeShowOnlyFileType exec
-			\"let NERDTreeIgnore =  ['\\(\\." . <f-args> . "\\\)\\@<!$[[file]]'] \| NERDTree"
+	\"let NERDTreeIgnore =  ['\\(\\." . <f-args> . "\\\)\\@<!$[[file]]'] \| NERDTree"
 command! NERDTreeShowOnlyC NERDTreeShowOnlyFileType c\|h\|cpp\|hpp
 
 command! CloseHiddenBuffers call s:CloseHiddenBuffers()
