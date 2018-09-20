@@ -17,4 +17,15 @@ snippet todo "TODO comment" bw
 `!p snip.rv=get_comment_format()[0]` ${2:TODO}: $0 <`!v strftime('%d-%m-%y')`, `!v g:snips_author` `!p snip.rv=get_comment_format()[2]`
 endsnippet
 
+snippet modeline
+`!p snip.rv=get_comment_format()[0]`vim: set ${1:et sw=4 ts=4 tw=79} $0: `!p snip.rv=get_comment_format()[2]`
+endsnippet
+snippet makeprg
+`!p snip.rv=get_comment_format()[0]`vim: set ${1:et sw=4 ts=4 tw=79} makeprg=${2:make} :
+endsnippet
+
+
+snippet let-modeline
+`!p snip.rv=get_comment_format()[0]`VIM: let makeprg=$0
+endsnippet
 # vim:ft=snippets:
