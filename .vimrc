@@ -1,7 +1,7 @@
 " File              : .vimrc
 " Author            : sinhnn <sinhnn.92@gmail.com>
 " Date              : 06.01.2018
-" Last Modified Date: 11.09.2018
+" Last Modified Date: 20.09.2018
 " Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 call plug#begin('~/.vim/plugged')
 " Ultility
@@ -13,6 +13,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 Plug 'https://github.com/tpope/vim-repeat'
 Plug 'https://github.com/vim-scripts/visualrepeat'
+Plug 'https://github.com/vim-scripts/let-modeline.vim'
 " Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -37,6 +38,7 @@ call plug#end()
 " -------------------- Common -------------------------------------------
 let g:author="sinhnn"
 let g:mail="sinhnn.92@gmail.com"
+let g:snips_author=g:author
 
 set t_Co=256
 set background=dark
@@ -60,9 +62,9 @@ set laststatus=2
 set errorformat=%f:%l:%m  "compatible with `grep -n`
 set number
 " UTF-8 (Vietnamese)
-set enc=utf-8
-set fileencodings=utf-8
-set fileformats=unix,dos,mac
+"set enc=utf-8
+"set fileencodings=utf-8
+"set fileformats=unix,dos,mac
 highlight StatusLine cterm=bold ctermfg=white ctermbg=blue
 
 map <S-Insert> <MiddleMouse>
