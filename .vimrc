@@ -1,7 +1,7 @@
 " File              : .vimrc
 " Author            : sinhnn <sinhnn.92@gmail.com>
 " Date              : 06.01.2018
-" Last Modified Date: 20.09.2018
+" Last Modified Date: 01.10.2018
 " Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 call plug#begin('~/.vim/plugged')
 " Ultility
@@ -119,3 +119,18 @@ function! s:CloseHiddenBuffers()
     endif
   endfor
 endfunction
+
+function! FillLine( str )
+    " set tw to the desired total length
+    let tw = &textwidth
+    if tw==0 | let tw = 80 | endif
+    " strip trailing spaces first
+    .s/[[:space:]]*$//
+    " calculate total number of 'str's to insert
+    let reps = (tw - col("$")) / len(a:str)
+    if reps > 0
+        .s/$/\=(' '.repeat(a:str, reps))/
+    endif
+	return ''
+endfunction
+command -nargs=1 FilleLine call FillLine(<f-args>)
