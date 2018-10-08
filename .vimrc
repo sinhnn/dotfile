@@ -1,4 +1,4 @@
-" File              : .vimrc
+" File              : /home/sinhnn/.vimrc
 " Author            : sinhnn <sinhnn.92@gmail.com>
 " Date              : 06.01.2018
 " Last Modified Date: 08.10.2018
@@ -89,6 +89,7 @@ let g:easy_align_delimiters = {
 
 let g:header_field_author = g:author
 let g:header_field_author_email = g:mail
+let g:header_auto_add_header = 0
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 set rtp+=~/.fzf
