@@ -1,7 +1,7 @@
 " File              : .vimrc
 " Author            : sinhnn <sinhnn.92@gmail.com>
 " Date              : 06.01.2018
-" Last Modified Date: 01.10.2018
+" Last Modified Date: 08.10.2018
 " Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 call plug#begin('~/.vim/plugged')
 " Ultility
@@ -14,7 +14,7 @@ Plug 'mileszs/ack.vim'
 Plug 'https://github.com/tpope/vim-repeat'
 Plug 'https://github.com/vim-scripts/visualrepeat'
 Plug 'https://github.com/vim-scripts/let-modeline.vim'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
@@ -133,4 +133,6 @@ function! FillLine( str )
     endif
 	return ''
 endfunction
-command -nargs=1 FilleLine call FillLine(<f-args>)
+command! -nargs=1 FilleLine call FillLine(<f-args>)
+
+:source $HOME/.vim/svim/addArgs.vim
