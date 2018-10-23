@@ -14,3 +14,9 @@ snippet pr "print"
 print ("${1:}" + ${2:} + ".")
 $0
 endsnippet
+
+snippet read_file "Read a file line by line"
+with open(${1:infile}, 'r') as f:
+	for line in f:
+		${2:statement}
+endsnippet
