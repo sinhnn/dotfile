@@ -20,7 +20,7 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'https://github.com/scrooloose/nerdtree'
-
+Plug 'https://github.com/jiangmiao/auto-pairs'
 " Coding style
 Plug 'Yggdroot/indentLine'
 Plug 'https://github.com/alpertuna/vim-header'
