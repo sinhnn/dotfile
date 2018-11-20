@@ -5,7 +5,8 @@
 " Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 
 fun! AddArgsPy(...)
-	let s:str = "parser = argparse.ArgumentParser(Description = '" . a:000[0] . "')"
+	put "# import argparse"
+	let s:str = "parser = argparse.ArgumentParser(description = '" . a:000[0] . "')"
 	put = s:str
 	for arg in a:000[1:]
 		let s:str =  "parser.add_argument('--" . arg . "', help = '" . arg . "', default='', required=False)"
