@@ -23,6 +23,10 @@ snippet ROOT_DIR	"Root directory, support creating env.sh"
 ROOT_DIR=\$(dirname \$(readlink -f \${BASH_SOURCE[0]}))
 endsnippet
 
+snippet LOG	"Logging information"
+echo "\`date +"%H:%M - %d:%m:%Y"\` : \$0 : ${1:msg}"
+endsnippet
+
 snippet ec "echo"
 echo "${1:}."
 $0
