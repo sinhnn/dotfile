@@ -1,0 +1,41 @@
+snippet args
+	function usage() {
+		echo "Usage: \$0 ${2:...}"
+		echo "Desc: ${1:desc}"
+	}
+
+	while [[ $# -gt 0 ]];
+	do
+		case "\$1" in
+			--infile | -i)
+				inf=\$2; shift 2;;
+			${0:--}
+			--help | -h)
+				usage; exit 0 ;;
+			* )
+				usage; exit 1;;
+		esac
+	done
+	$0
+
+snippet ROOT_DIR
+	ROOT_DIR=\$(dirname \$(readlink -f \${BASH_SOURCE[0]}))
+
+snippet file_exist
+	[[ -f "${1:}" ]] ${2:||} { ${3:echo "Error: File '$1' does not exist."; exit 1;} } 
+	$0
+
+snippet dir_exist
+	[[ -d "${1:}" ]] ${2:||} { ${3:echo "Error: Directory '$1' does not exist."; exit 1;} }
+	$0
+
+snippet arg_is_empty
+	[[ -z "${$1// }" ]] ${2:&&} { ${3:echo "Error: \${${1:}} is empty."; ${3:exit 1};} }
+
+snippet command_exist
+	command -v ${1:cmd} >/dev/null 2>&1 || { echo >&2 "$1 is not installed."; exit 1; }
+	$0
+
+snippet LOG
+	echo "\`date +"%H:%M - %d:%m:%Y"\` : \$0 : ${1:msg}"
+
