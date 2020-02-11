@@ -20,3 +20,24 @@ with open(${1:infile}, 'r') as f:
 	for line in f:
 		${2:statement}
 endsnippet
+
+snippet debugLogger
+import logging
+FORMAT = "${1:%(asctime)s %(name)-12s %(levelname)-8s [%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s %(message)s}"
+logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+endsnippet
+
+snippet debugFormat
+DEBUG_FORMAT = "%(asctime)s %(name)-12s %(levelname)-8s [%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s %(message)s"
+endsnippet
+
+snippet platform
+if platform.system() == "Windows":
+    ${1:__CMD__=}
+elif platform.system() == "Linux":
+    $1
+else:
+    print("unsuported platform {}".format(platform.system()))
+    sys.exit(1)
+$0
+endsnippet
