@@ -3,3 +3,6 @@ snippet getLogger
     FORMAT = "[%(asctime)s - %(filename)s:%(lineno)s - %(funcName)s ] %(message)s"
     logger = logging.getLogger(__name__)
     logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+
+snippet debugFormat
+    "%(asctime)s %(name)-12s %(levelname)-8s [%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s %(message)s"
