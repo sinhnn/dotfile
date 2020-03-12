@@ -13,7 +13,14 @@ Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 Plug 'https://github.com/tpope/vim-repeat'
 Plug 'https://github.com/vim-scripts/visualrepeat'
-Plug 'https://github.com/vim-scripts/let-modeline.vim'
+
+" Python
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-syntastic/syntastic'
+Plug 'neoclide/coc-snippets'
+
+
+"Plug 'https://github.com/vim-scripts/let-modeline.vim'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -26,6 +33,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'https://github.com/alpertuna/vim-header'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'bitc/vim-bad-whitespace'
 
 " Color
 Plug 'https://github.com/endel/vim-github-colorscheme'
@@ -64,8 +72,20 @@ set number
 " UTF-8 (Vietnamese)
 "set enc=utf-8
 "set fileencodings=utf-8
-"set fileformats=unix,dos,mac
+set fileformats=unix
 highlight StatusLine cterm=bold ctermfg=white ctermbg=blue
+
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+set foldmethod=indent
+set foldlevel=99
+let g:UltiSnipsEditSplit="vertical"
+
+"let g:syntastic_python_checkers = ['pyflakes']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 
 map <S-Insert> <MiddleMouse>
 inoremap <S-Insert> <MiddleMouse>
