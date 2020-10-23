@@ -22,7 +22,7 @@ with open(${1:infile}, 'r') as f:
 		${2:statement}
 endsnippet
 
-snippet mlog
+snippet mlog	"Create logger for module"
 import logging
 LOGGER = logging.getLogger(${1:__name__})
 LOGGER.setLevel(logging.DEBUG)
