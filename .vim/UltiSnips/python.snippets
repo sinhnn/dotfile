@@ -1,4 +1,5 @@
 snippet args	"Add an argparse"
+import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--${1:}', help='$1', default='')
 $0
@@ -19,6 +20,22 @@ snippet read_file "Read a file line by line"
 with open(${1:infile}, 'r') as f:
 	for line in f:
 		${2:statement}
+endsnippet
+
+snippet mlog
+import logging
+LOGGER = logging.getLogger(${1:__name__})
+LOGGER.setLevel(logging.DEBUG)
+fh = logging.FileHandler(${2:__file__} + '.log')
+fh.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+LOGGER.addHandler(fh)
+LOGGER.addHandler(ch)
+$0
 endsnippet
 
 snippet debugLogger
