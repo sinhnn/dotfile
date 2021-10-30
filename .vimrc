@@ -63,7 +63,7 @@ set hlsearch
 "set showmatch
 set showfulltag
 set textwidth=79
-"set colorcolumn=+1
+set colorcolumn=+1
 set modeline
 set visualbell
 set laststatus=2
@@ -80,6 +80,7 @@ set foldmethod=indent
 set foldlevel=99
 let g:UltiSnipsEditSplit="vertical"
 
+command! Cwd cd %:p:h
 "let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -156,4 +157,4 @@ function! FillLine( str )
 endfunction
 command! -nargs=1 FilleLine call FillLine(<f-args>)
 
-:source $HOME/.vim/svim/addArgs.vim
+" :source $HOME/.vim/svim/addArgs.vim
