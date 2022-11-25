@@ -5,42 +5,38 @@
 " Last Modified By  : sinhnn <sinhnn.92@gmail.com>
 call plug#begin('~/.vim/plugged')
 " Ultility
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/tmhedberg/matchit'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim'
-Plug 'junegunn/fzf', {'do': './install --all'}
-Plug 'junegunn/fzf.vim'
+" Plug 'https://github.com/junegunn/fzf', {'do': './install --all'}
 Plug 'mileszs/ack.vim'
 Plug 'https://github.com/tpope/vim-repeat'
 Plug 'https://github.com/vim-scripts/visualrepeat'
 
 " Python
-Plug 'tmhedberg/SimpylFold'
-Plug 'vim-syntastic/syntastic'
-Plug 'neoclide/coc-snippets'
+" Plug 'tmhedberg/SimpylFold'
+" Plug 'vim-syntastic/syntastic'
+" Plug 'neoclide/coc-snippets'
 
 
 "Plug 'https://github.com/vim-scripts/let-modeline.vim'
-Plug 'majutsushi/tagbar'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdcommenter'
+Plug 'https://github.com/majutsushi/tagbar'
+Plug 'https://github.com/SirVer/ultisnips'
+Plug 'https://github.com/honza/vim-snippets'
+Plug 'https://github.com/tpope/vim-surround'
+Plug 'https://github.com/scrooloose/nerdcommenter'
 Plug 'https://github.com/scrooloose/nerdtree'
 Plug 'https://github.com/jiangmiao/auto-pairs'
+
 " Coding style
-Plug 'Yggdroot/indentLine'
+Plug 'https://github.com/Yggdroot/indentLine'
 Plug 'https://github.com/alpertuna/vim-header'
-Plug 'vim-scripts/DoxygenToolkit.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'bitc/vim-bad-whitespace'
+" Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'https://github.com/junegunn/vim-easy-align'
+Plug 'https://github.com/bitc/vim-bad-whitespace'
 
 " Color
-Plug 'https://github.com/endel/vim-github-colorscheme'
-Plug 'altercation/vim-colors-solarized'
-Plug 'https://github.com/dracula/vim'
-Plug 'https://github.com/jeffkreeftmeijer/vim-dim'
-Plug 'https://github.com/Erichain/vim-monokai-pro.git'
+Plug 'https://github.com/tomasiser/vim-code-dark'
 
 call plug#end()
 " -------------------- Common -------------------------------------------
@@ -54,8 +50,8 @@ syntax enable
 set wildmenu
 "set wildmode=list:longest,full,full
 "set completeopt+=menu,preview
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set incsearch
 set hlsearch
 "set undolevels=100
@@ -65,14 +61,15 @@ set showfulltag
 set textwidth=79
 set colorcolumn=+1
 set modeline
-set visualbell
+" Disable beep and flash
+set noeb vb t_vb=
 set laststatus=2
 set errorformat=%f:%l:%m  "compatible with `grep -n`
 set number
 " UTF-8 (Vietnamese)
-"set enc=utf-8
-"set fileencodings=utf-8
-set fileformats=unix
+" set enc=utf-8
+" set fileencodings=utf-8
+" set fileformats=unix
 highlight StatusLine cterm=bold ctermfg=white ctermbg=blue
 
 "au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
@@ -111,12 +108,6 @@ let g:easy_align_delimiters = {
 let g:header_field_author = g:author
 let g:header_field_author_email = g:mail
 let g:header_auto_add_header = 0
-
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-set rtp+=~/.fzf
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-j> <plug>(fzf-complete-file)
-imap <c-x><c-l> <plug>(fzf-complete-line)
 
 map <c-n> : NERDTreeToggle<cr>
 command! -nargs=1 ShowOnlyFileType exec "NERDTreeShowOnlyFileType " . <f-args>

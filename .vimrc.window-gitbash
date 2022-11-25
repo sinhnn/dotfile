@@ -22,7 +22,8 @@ let g:author="sinhnn"
 let g:mail="sinhnn.92@gmail.com"
 let g:snips_author=g:author
 
-set novisualbell
+" Disable beep and flash
+set noeb vb t_vb=
 set t_Co=256
 set background=dark
 syntax enable

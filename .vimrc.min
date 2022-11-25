@@ -20,7 +20,8 @@ set showfulltag
 set textwidth=79
 set colorcolumn=+1
 set modeline
-set visualbell
+" Disable beep and flash
+set noeb vb t_vb=
 set laststatus=2
 "set errorformat=%f:%l:%m  " errorformat work with `grep -n` well
 autocmd VimLeave * mksession! ~/.last_session.vim
