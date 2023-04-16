@@ -1,0 +1,14 @@
+diff --git a/meta/recipes-devtools/gcc/gcc-runtime.inc b/meta/recipes-devtools/gcc/gcc-runtime.inc
+index fa5b048dab..de8f1d807b 100644
+--- a/meta/recipes-devtools/gcc/gcc-runtime.inc
++++ b/meta/recipes-devtools/gcc/gcc-runtime.inc
+@@ -272,7 +272,8 @@ SUMMARY:libitm-staticdev = "GNU transactional memory support library - static de
+ 
+ require gcc-testsuite.inc
+ 
+-EXTRA_OEMAKE:prepend:task-check = "${PARALLEL_MAKE} "
++# EXTRA_OEMAKE:prepend:task-check = "${PARALLEL_MAKE} "
++EXTRA_OEMAKE:prepend:task-check = "-j1"
+ 
+ MAKE_CHECK_TARGETS ??= "check-gcc ${@" ".join("check-target-" + i for i in d.getVar("RUNTIMETARGET").split())}"
+ # prettyprinters and xmethods require gdb tooling
